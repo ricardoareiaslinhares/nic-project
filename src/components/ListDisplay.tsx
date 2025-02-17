@@ -1,7 +1,8 @@
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { Box, ListItem, List, Typography, ListItemButton } from "@mui/material";
+import { Box, List, Typography, ListItemButton } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import MenuContext from "./MenuContext";
 
 interface Item {
   id: number;
@@ -17,6 +18,7 @@ interface Props<T extends Item> {
 
 const ListDisplay = <T extends Item>({ items, proprieties, go2link }: Props<T>) => {
   const navigate = useNavigate()
+  const [openMenuContext, setOpenMenuContext] = useState(false);
 
   const handleListItemClick = (
     id: number,
@@ -25,12 +27,12 @@ const ListDisplay = <T extends Item>({ items, proprieties, go2link }: Props<T>) 
     console.log(id);
   };
 
-  const handleListButtonClick = (
+  const handleMenuContextClick = (
     id: number,
-    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     event.stopPropagation();
-    setSelectedId(id);
+    setOpenMenuContext(false)
     console.log(id, "from menu");
   };
 
@@ -45,10 +47,8 @@ const ListDisplay = <T extends Item>({ items, proprieties, go2link }: Props<T>) 
     >
       {items.map((item) => (
         <ListItemButton
-
           key={item.id}
           onClick={() => handleListItemClick(item.id)}
-          className="flex flex-1 flex-row border-b-1 hover:bg-slate-300 hover:cursor-pointer justify-end items-center "
         >
           <Typography variant="h6" mr={2}>
             {item.name}
@@ -60,26 +60,9 @@ const ListDisplay = <T extends Item>({ items, proprieties, go2link }: Props<T>) 
               </Box>
             ))}
           </Box>
-
-          <ListItemButton
-            onClick={(event) => handleListButtonClick(item.id, event)}
-            onMouseDown={(event) => event.stopPropagation()} //stops parent ripple effect
-            sx={{
-              display: "flex",
-              flex: 0,
-              alignItems: "center",
-              minWidth: "unset",
-              justifyContent: "center",
-              borderRadius: "9999px",
-              bgcolor: "transparent",
-              transition: "background-color 0.2s ease-in-out",
-              ":hover": { cursor: "pointer", bgcolor: "aquamarine" },
-              ml: 4,
-              p: 2,
-            }}
-          >
-            <MoreVertIcon />
-          </ListItemButton>
+        <div className="bg-red-300">
+            <MenuContext isOpen={openMenuContext} onClose={(event) => handleMenuContextClick(item.id, event)}/>
+          </div> 
         </ListItemButton>
       ))}
     </List>
