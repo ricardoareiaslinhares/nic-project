@@ -1,10 +1,11 @@
-import React from 'react'
+
+import ListDisplay from "../components/ListDisplay"
 
 type Props = {}
 
 const Clients = (props: Props) => {
   return (
-    <div>Clients</div>
+    <ListDisplay items={[{id: 1, name: "Client 1", email: "email1"}, {id: 2, name: "Client 2", email: "email2"}]} proprieties={[ "email"]}/>
   )
 }
 
