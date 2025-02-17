@@ -1,6 +1,7 @@
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { Box, ListItem, List, Typography, ListItemButton } from "@mui/material";
 import { useState } from "react";
+import { useNavigate } from "react-router";
 
 interface Item {
   id: number;
@@ -11,19 +12,16 @@ interface Item {
 interface Props<T extends Item> {
   items: T[];
   proprieties: (keyof T)[];
-  link?: string;
+  go2link: string;
 }
 
-const ListDisplay = <T extends Item>({ items, proprieties }: Props<T>) => {
-  const [selectedId, setSelectedId] = useState(1);
+const ListDisplay = <T extends Item>({ items, proprieties, go2link }: Props<T>) => {
+  const navigate = useNavigate()
 
   const handleListItemClick = (
     id: number,
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
-
-    
-    setSelectedId(id);
+    navigate(go2link+String(id))
     console.log(id);
   };
 
@@ -31,7 +29,6 @@ const ListDisplay = <T extends Item>({ items, proprieties }: Props<T>) => {
     id: number,
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
-
     event.stopPropagation();
     setSelectedId(id);
     console.log(id, "from menu");
@@ -50,19 +47,19 @@ const ListDisplay = <T extends Item>({ items, proprieties }: Props<T>) => {
         <ListItemButton
 
           key={item.id}
-          onClick={(event) => handleListItemClick(item.id, event)}
+          onClick={() => handleListItemClick(item.id)}
           className="flex flex-1 flex-row border-b-1 hover:bg-slate-300 hover:cursor-pointer justify-end items-center "
         >
           <Typography variant="h6" mr={2}>
             {item.name}
           </Typography>
-          <div className=" flex flex-1 gap-4">
+          <Box display="flex" flex={1} gap={2}>
             {proprieties.map((prop) => (
               <Box key={prop.toString()}>
                 <Typography>{item[prop]}</Typography>
               </Box>
             ))}
-          </div>
+          </Box>
 
           <ListItemButton
             onClick={(event) => handleListButtonClick(item.id, event)}
