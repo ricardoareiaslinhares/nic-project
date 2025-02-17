@@ -1,13 +1,18 @@
-import { Outlet } from "react-router"
+import { Outlet } from "react-router";
+import SideBar from "./components/SideBar";
 
 const Layout = () => {
   return (
-    <main className="flex flex-1 flex-col items-center bg-red-200 ml-[250px] p-4 w-screen min-h-screen">
-        <h1>Header</h1>
+    <main className="flex flex-1 flex-col  bg-red-200w-screen min-h-screen">
+      <div className="h-12 bg-blue-900 w-screen">navbar</div>
+      <section className="flex flex-1 flex-row itens-start bg-amber-200">
+        <SideBar />
         <Outlet />
-        <h3>Footer</h3>
-    </main>
-  )
-}
+      </section>
 
-export default Layout
+      <h3>Footer</h3>
+    </main>
+  );
+};
+
+export default Layout;
