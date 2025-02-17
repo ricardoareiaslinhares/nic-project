@@ -1,8 +1,9 @@
-import MoreVertIcon from "@mui/icons-material/MoreVert";
+;
 import { Box, List, Typography, ListItemButton } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import MenuContext from "./MenuContext";
+import { MenuItemOptions } from "../types";
 
 interface Item {
   id: number;
@@ -14,9 +15,10 @@ interface Props<T extends Item> {
   items: T[];
   proprieties: (keyof T)[];
   go2link: string;
+  menuItemOptions: MenuItemOptions[]
 }
 
-const ListDisplay = <T extends Item>({ items, proprieties, go2link }: Props<T>) => {
+const ListDisplay = <T extends Item>({ items, proprieties, go2link, menuItemOptions }: Props<T>) => {
   const navigate = useNavigate()
   const [openMenuContext, setOpenMenuContext] = useState(false);
 
@@ -60,8 +62,8 @@ const ListDisplay = <T extends Item>({ items, proprieties, go2link }: Props<T>) 
               </Box>
             ))}
           </Box>
-        <div className="bg-red-300">
-            <MenuContext isOpen={openMenuContext} onClose={(event) => handleMenuContextClick(item.id, event)}/>
+        <div>
+            <MenuContext isOpen={openMenuContext} menuItemOptions={menuItemOptions} id={item.id} />
           </div> 
         </ListItemButton>
       ))}

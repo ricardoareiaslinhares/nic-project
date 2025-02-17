@@ -1,29 +1,21 @@
-import {
-  Button,
-  Divider,
-  MenuItem,
-  Menu,
-  ListItemButton,
-  MenuProps,
-} from "@mui/material";
+import { Button, Divider, Menu } from "@mui/material";
 
 import { useEffect, useState } from "react";
-import EditIcon from "@mui/icons-material/Edit";
-import ArchiveIcon from "@mui/icons-material/Archive";
-import FileCopyIcon from "@mui/icons-material/FileCopy";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import MenuContextItem from "./MenuContextItem";
+import { MenuItemOptions } from "../types";
 
 type Props = {
   isOpen: boolean;
-  onClose: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  menuItemOptions: MenuItemOptions[];
+  id: number;
 };
 
-const MenuContext = ({ isOpen, onClose }: Props) => {
+const MenuContext = ({ isOpen, menuItemOptions, id }: Props) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+
   useEffect(() => {
     if (!isOpen) setAnchorEl(null);
   }, [isOpen]);
@@ -36,6 +28,28 @@ const MenuContext = ({ isOpen, onClose }: Props) => {
     setAnchorEl(null);
   };
 
+
+  type MenuItemClientProps = {
+    options: MenuItemOptions[];
+    handleClose: () => void;
+  };
+  const MenuItemClient = ({ options, handleClose }: MenuItemClientProps) => {
+    return (
+      <>
+        {options.map((item, index) => (
+          <MenuContextItem
+            key={index}
+            onClose={handleClose}
+            onClick={() => item.onClick(id)}
+            sx={{ color: item.label === "Apagar" ? "red" : "black" }}
+          >
+            {item.icon}
+            {item.label}
+          </MenuContextItem>
+        ))}
+      </>
+    );
+  };
 
   return (
     <div>
@@ -59,6 +73,7 @@ const MenuContext = ({ isOpen, onClose }: Props) => {
           justifyContent: "center",
           borderRadius: "9999px",
           bgcolor: "transparent",
+          color: "black",
           transition: "background-color 0.2s ease-in-out",
           ":hover": { cursor: "pointer", bgcolor: "aquamarine" },
           ml: 4,
@@ -72,29 +87,13 @@ const MenuContext = ({ isOpen, onClose }: Props) => {
         MenuListProps={{
           "aria-labelledby": "demo-customized-button",
         }}
-        anchorEl={anchorEl}
+        anchorEl={anchorEl} //MUI prop for popups
         open={open}
         onClick={(event) => event.stopPropagation()}
         onMouseDown={(event) => event.stopPropagation()}
         onClose={handleClose}
       >
-        <MenuContextItem onClose={handleClose}>
-          <EditIcon />
-          Edit
-        </MenuContextItem>
-        <MenuContextItem onClose={handleClose}>
-          <FileCopyIcon />
-          Duplicate
-        </MenuContextItem>
-        <Divider sx={{ my: 0.5 }} />
-        <MenuContextItem onClose={handleClose}>
-          <ArchiveIcon />
-          Archive
-        </MenuContextItem>
-        <MenuContextItem onClose={handleClose}>
-          <MoreHorizIcon />
-          More
-        </MenuContextItem>
+        <MenuItemClient options={menuItemOptions} handleClose={handleClose} />
       </Menu>
     </div>
   );
