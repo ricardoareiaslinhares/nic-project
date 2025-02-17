@@ -1,5 +1,6 @@
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { Box, ListItem, List } from "@mui/material";
+import { Box, ListItem, List, Typography, ListItemButton } from "@mui/material";
+import { useState } from "react";
 
 interface Item {
   id: number;
@@ -10,9 +11,31 @@ interface Item {
 interface Props<T extends Item> {
   items: T[];
   proprieties: (keyof T)[];
+  link?: string;
 }
 
 const ListDisplay = <T extends Item>({ items, proprieties }: Props<T>) => {
+  const [selectedId, setSelectedId] = useState(1);
+
+  const handleListItemClick = (
+    id: number,
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+
+    
+    setSelectedId(id);
+    console.log(id);
+  };
+
+  const handleListButtonClick = (
+    id: number,
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
+
+    event.stopPropagation();
+    setSelectedId(id);
+    console.log(id, "from menu");
+  };
 
   return (
     <List
@@ -20,27 +43,47 @@ const ListDisplay = <T extends Item>({ items, proprieties }: Props<T>) => {
         display: "flex",
         flex: 1,
         flexDirection: "column",
-        gap: 1,
         height: "60px",
       }}
     >
       {items.map((item) => (
-        <ListItem
+        <ListItemButton
+
           key={item.id}
-          className="flex flex-1 flex-row bg-amber-800 hover:bg-slate-300 hover:cursor-pointer justify-between items-center "
+          onClick={(event) => handleListItemClick(item.id, event)}
+          className="flex flex-1 flex-row border-b-1 hover:bg-slate-300 hover:cursor-pointer justify-end items-center "
         >
-            <p className="font-bold mr-4"> {item.name}</p>
+          <Typography variant="h6" mr={2}>
+            {item.name}
+          </Typography>
           <div className=" flex flex-1 gap-4">
             {proprieties.map((prop) => (
               <Box key={prop.toString()}>
-                <p>{item[prop]}</p>
+                <Typography>{item[prop]}</Typography>
               </Box>
             ))}
           </div>
-          <Box className="ml-4 hover:bg-amber-100 hover:rounded-full p-2">
+
+          <ListItemButton
+            onClick={(event) => handleListButtonClick(item.id, event)}
+            onMouseDown={(event) => event.stopPropagation()} //stops parent ripple effect
+            sx={{
+              display: "flex",
+              flex: 0,
+              alignItems: "center",
+              minWidth: "unset",
+              justifyContent: "center",
+              borderRadius: "9999px",
+              bgcolor: "transparent",
+              transition: "background-color 0.2s ease-in-out",
+              ":hover": { cursor: "pointer", bgcolor: "aquamarine" },
+              ml: 4,
+              p: 2,
+            }}
+          >
             <MoreVertIcon />
-          </Box>
-        </ListItem>
+          </ListItemButton>
+        </ListItemButton>
       ))}
     </List>
   );
