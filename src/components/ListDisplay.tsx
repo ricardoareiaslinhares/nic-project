@@ -1,8 +1,7 @@
 ;
-import { Box, List, Typography, ListItemButton } from "@mui/material";
-import { useState } from "react";
+import { Box, List, Typography, ListItemButton, ListItemText } from "@mui/material";
 import { useNavigate } from "react-router";
-import MenuContext from "./MenuContext";
+import MenuContext from "./MenuContext/MenuContext";
 import { MenuItemOptions } from "../types";
 
 interface Item {
@@ -20,7 +19,6 @@ interface Props<T extends Item> {
 
 const ListDisplay = <T extends Item>({ items, proprieties, go2link, menuItemOptions }: Props<T>) => {
   const navigate = useNavigate()
-  const [openMenuContext, setOpenMenuContext] = useState(false);
 
   const handleListItemClick = (
     id: number,
@@ -29,14 +27,6 @@ const ListDisplay = <T extends Item>({ items, proprieties, go2link, menuItemOpti
     console.log(id);
   };
 
-  const handleMenuContextClick = (
-    id: number,
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    event.stopPropagation();
-    setOpenMenuContext(false)
-    console.log(id, "from menu");
-  };
 
   return (
     <List
@@ -51,19 +41,23 @@ const ListDisplay = <T extends Item>({ items, proprieties, go2link, menuItemOpti
         <ListItemButton
           key={item.id}
           onClick={() => handleListItemClick(item.id)}
+          sx={{
+            display: "flex",
+            flex: 1,
+            flexDirection: "row",
+            columnGap: 2,
+          }}
         >
-          <Typography variant="h6" mr={2}>
-            {item.name}
-          </Typography>
-          <Box display="flex" flex={1} gap={2}>
+          <Typography variant="h6">{item.name}</Typography>
+          <Box display={{ xs: "none", md: "flex" }} flex={1} gap={2}>
             {proprieties.map((prop) => (
               <Box key={prop.toString()}>
-                <Typography>{item[prop]}</Typography>
+                <ListItemText primary={item[prop]}  />
               </Box>
             ))}
           </Box>
         <div>
-            <MenuContext isOpen={openMenuContext} menuItemOptions={menuItemOptions} id={item.id} />
+            <MenuContext menuItemOptions={menuItemOptions} id={item.id} />
           </div> 
         </ListItemButton>
       ))}
