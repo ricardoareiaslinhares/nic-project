@@ -19,6 +19,16 @@ export const getNotes = async (): Promise<Note[]> => {
   }
 };
 
+export const getNotesByClientId = async (id: number): Promise<Note[]> => {
+  try {
+    const response = await api.get<Note[]>(`?clientId=${id}`);
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching note with ID ${id}:`, error);
+    throw error;
+  }
+};
+
 export const getNoteById = async (id: number): Promise<Note> => {
   try {
     const response = await api.get<Note>(`${id}`);
@@ -28,6 +38,7 @@ export const getNoteById = async (id: number): Promise<Note> => {
     throw error;
   }
 };
+
 
 export const createNote = async (noteData: Note): Promise<Note> => {
   try {
