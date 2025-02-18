@@ -2,10 +2,10 @@ import { useCallback, useState } from "react";
 import { Outlet } from "react-router";
 
 import DrawerCustom from "./components/SideBar/DrawerCustom";
-import { Box, styled, Toolbar } from "@mui/material";
+import { Box, styled} from "@mui/material";
 
 const Layout = () => {
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(true);
   const drawerWidth = 240;
   const handleDrawer = useCallback(() => {
     setIsDrawerOpen((prev) => !prev);

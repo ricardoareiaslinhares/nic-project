@@ -44,6 +44,12 @@ const DrawerCustom =({
   const theme = useTheme();
   const navigate = useNavigate();
 
+  const handleNavigation = (path: string) => {
+    if (location.pathname !== path) {
+      navigate(path);
+    }
+  }
+
   const drawerItems = [
     { label: "Clientes", path: "/clients", icon: <PersonIcon /> },
   ];
@@ -87,7 +93,7 @@ const DrawerCustom =({
         <List>
           {drawerItems.map((item, index) => (
             <ListItem key={index} disablePadding>
-              <ListItemButton onClick={() => navigate(item.path)}>
+              <ListItemButton onClick={() => handleNavigation(item.path)}>
                 <ListItemIcon>{item.icon}</ListItemIcon>
                 <ListItemText primary={item.label} />
               </ListItemButton>
