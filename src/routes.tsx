@@ -2,7 +2,7 @@ import Home from "./pages/Home";
 import { createBrowserRouter, RouteObject } from "react-router-dom";
 import NotFoundError from "./pages/NotFoundError";
 import Clients from "./pages/clients/Clients";
-import ClientDetails from "./pages/ClientDetails";
+import ClientDetails from "./pages/clientDetails/ClientDetails";
 import Layout from "./Layout";
 
 const routes: RouteObject[] = [

@@ -6,16 +6,23 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useCallback, useState } from "react";
 import RenderClientsList from "./components/RenderClientsList";
-import SearchBar from "../../components/SearchBar";
+import { useQuery } from "@tanstack/react-query";
+import { getClients } from "../../api/clientsApi";
 
-type Props = {};
 
-const Clients = (props: Props) => {
+const Clients = () => {
+
+  const {data, error, isLoading} = useQuery({
+    queryKey:["clients"],
+    queryFn: () => getClients()
+  })
+  console.log(data)
+
   const navigate = useNavigate();
   const go2link = "/clients/";
 
   const [openModal, setOpenModal] = useState(false);
-
+  
   const handleOpenModal = useCallback(() => {
     console.log("handleOpenModal called");
     setOpenModal((prev) => !prev);
@@ -50,10 +57,7 @@ const Clients = (props: Props) => {
     },
   ];
 
-  const items = [
-    { id: 1, name: "Client 1", email: "email1" },
-    { id: 2, name: "Client 2", email: "email2" },
-  ];
+ 
 
   const contentForModal: ContentForModal = {
     title: "Apagar Cliente",
@@ -62,11 +66,13 @@ const Clients = (props: Props) => {
       console.log("apagar", id);
     },
   };
+  if (error) return <div>Error loading data</div>;
+  if (isLoading) return <div>Loadingdata</div>;
   return (
     <ListDisplay
       renderList={
         <RenderClientsList
-          items={items}
+          items={data ?? []}
           navigate2ClientDetails={navigate2ClientDetails}
           menuItemOptions={menuItemOptions}
           openModal={openModal}

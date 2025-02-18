@@ -1,17 +1,14 @@
-import { Box, ListItem, ListItemButton, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import MenuContext from "../../../components/MenuContext/MenuContext";
 import Modal from "../../../components/Modal/Modal";
 import { ContentForModal, MenuItemOptions } from "../../../types";
 import ModalContentDelete from "../../../components/Modal/ModalContentDelete";
 import { useCallback, useState } from "react";
+import Client from "../../../entities/client";
+import ListItemButtonCustom from "../../../components/ListItemButtonCustom";
 
-interface Item {
-  id: number;
-  name: string;
-  [key: string]: any;
-}
 type Props = {
-  items: Item[];
+  items: Client[];
   navigate2ClientDetails: (id: number) => void;
   menuItemOptions: MenuItemOptions[];
   openModal: boolean;
@@ -27,47 +24,39 @@ const RenderClientsList = ({
   handleOpenModal,
   contentForModal,
 }: Props) => {
-  const [selectedItemId, setSelectedItemId] = useState<number | null>(null)
+  const [selectedItemId, setSelectedItemId] = useState<number | null>(null);
 
-  const selectItemId = useCallback((id:number)=>{
-    setSelectedItemId(id)
-  },[])
-  
+  const selectItemId = useCallback((id: number) => {
+    setSelectedItemId(id);
+  }, []);
+
   return (
     <>
-      {items.map((item: Item) => (
-        <ListItem
+      {items.map((item: Client) => (
+        <ListItemButtonCustom
           key={item.id}
-          disablePadding
-          sx={{ bgcolor: "#f5f5f5", marginBottom: "4px" }}
+          onClick={() => navigate2ClientDetails(Number(item.id))}
         >
-          <ListItemButton
-            onClick={() => navigate2ClientDetails(item.id)}
-            sx={{
-              display: "flex",
-              flex: 1,
-              flexDirection: "row",
-              justifyContent: "space-between",
-              columnGap: 2,
-            }}
-          >
-            <Typography variant="h6">{item.name}</Typography>
-            <div>
-              <MenuContext menuItemOptions={menuItemOptions} id={item.id} selectItemId={selectItemId} />
-            </div>
-          </ListItemButton>
-        </ListItem>
+          <Typography variant="h6">{item.name}</Typography>
+          <div>
+            <MenuContext
+              menuItemOptions={menuItemOptions}
+              id={Number(item.id)}
+              selectItemId={selectItemId}
+            />
+          </div>
+        </ListItemButtonCustom>
       ))}
-          <Modal open={openModal} handleOpenModal={handleOpenModal}>
-      {selectedItemId !== null && (
-        <ModalContentDelete
-          deleteAction={() => contentForModal.action(selectedItemId)}
-          cancelAction={handleOpenModal}
-          title={contentForModal.title}
-          message={contentForModal.message}
-        />
-      )}
-    </Modal>
+      <Modal open={openModal} handleOpenModal={handleOpenModal}>
+        {selectedItemId !== null && (
+          <ModalContentDelete
+            deleteAction={() => contentForModal.action(selectedItemId)}
+            cancelAction={handleOpenModal}
+            title={contentForModal.title}
+            message={contentForModal.message}
+          />
+        )}
+      </Modal>
     </>
   );
 };

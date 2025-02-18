@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { styled, useTheme } from "@mui/material/styles";
 import {
   Box,
@@ -16,10 +16,11 @@ import {
   ChevronLeft as ChevronLeftIcon,
   ChevronRight as ChevronRightIcon,
   Person as PersonIcon,
-
 } from "@mui/icons-material";
 import NavBar from "./NavBar";
 import { useNavigate } from "react-router";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { getClients } from "../../api/clientsApi";
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
@@ -35,20 +36,18 @@ type Props = {
   drawerWidth: number;
   children?: React.ReactNode;
 };
-const DrawerCustom =({
-  open,
-  drawerWidth,
-  handleDrawer,
-  children
-}: Props) => {
+const DrawerCustom = ({ open, drawerWidth, handleDrawer, children }: Props) => {
   const theme = useTheme();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
-  const handleNavigation = (path: string) => {
+  const handleClientsClick = (path: string) => {
     if (location.pathname !== path) {
       navigate(path);
+    } else {
+      queryClient.invalidateQueries({ queryKey: ["clients"] });
     }
-  }
+  };
 
   const drawerItems = [
     { label: "Clientes", path: "/clients", icon: <PersonIcon /> },
@@ -93,7 +92,7 @@ const DrawerCustom =({
         <List>
           {drawerItems.map((item, index) => (
             <ListItem key={index} disablePadding>
-              <ListItemButton onClick={() => handleNavigation(item.path)}>
+              <ListItemButton onClick={() => handleClientsClick(item.path)}>
                 <ListItemIcon>{item.icon}</ListItemIcon>
                 <ListItemText primary={item.label} />
               </ListItemButton>
@@ -105,6 +104,6 @@ const DrawerCustom =({
       {children}
     </Box>
   );
-}
+};
 
-export default DrawerCustom
+export default DrawerCustom;
