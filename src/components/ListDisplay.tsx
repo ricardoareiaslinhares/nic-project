@@ -1,6 +1,4 @@
-import { Box, List } from "@mui/material";
-import SearchBar from "./SearchBar";
-
+import { List } from "@mui/material";
 import { ReactNode } from "react";
 
 type Props = {
@@ -9,15 +7,6 @@ type Props = {
 };
 
 const ListDisplay = ({ children, renderList }: Props) => {
-  const deleteClientForModal = (id: number) => {
-    // deleteClient(id)
-    console.log(id);
-    //handleOpenModal();
-  };
-
-  /*   let menuItemOptionsModified = [...menuItemOptions];
-  menuItemOptionsModified[2].onClick = handleOpenModal; */
-
   return (
     <List
       sx={{
@@ -25,8 +14,9 @@ const ListDisplay = ({ children, renderList }: Props) => {
         flex: 1,
         flexDirection: "column",
       }}
-    > {renderList}
-
+    >
+      {renderList}
+      {children}
     </List>
   );
 };
