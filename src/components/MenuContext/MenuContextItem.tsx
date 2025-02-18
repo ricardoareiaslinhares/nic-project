@@ -6,6 +6,7 @@ type props = {
   children: React.ReactNode;
   sx?: SxProps<Theme>;
 } & JSX.IntrinsicElements["button"];
+
 const MenuContextItem = ({ onClose, children, sx, ...props }: props) => {
   return (
     <MenuItem

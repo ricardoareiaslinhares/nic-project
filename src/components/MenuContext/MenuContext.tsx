@@ -1,24 +1,17 @@
-import { Button, Divider, Menu } from "@mui/material";
-
-import { useEffect, useState } from "react";
-
+import { useState } from "react";
+import { Button, Menu } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import MenuContextItem from "./MenuContextItem";
-import { MenuItemOptions } from "../types";
+import { MenuItemOptions } from "../../types";
 
 type Props = {
-  isOpen: boolean;
   menuItemOptions: MenuItemOptions[];
   id: number;
 };
 
-const MenuContext = ({ isOpen, menuItemOptions, id }: Props) => {
+const MenuContext = ({ menuItemOptions, id }: Props) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-
-  useEffect(() => {
-    if (!isOpen) setAnchorEl(null);
-  }, [isOpen]);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation();
@@ -27,7 +20,6 @@ const MenuContext = ({ isOpen, menuItemOptions, id }: Props) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
 
   type MenuItemClientProps = {
     options: MenuItemOptions[];
