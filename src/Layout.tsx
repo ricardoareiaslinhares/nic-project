@@ -49,13 +49,13 @@ const Layout = () => {
         drawerWidth={drawerWidth}
       >
         <Main open={isDrawerOpen}>
-          <div className="w-full ">
+          <div>
 
           <Outlet />
           </div>
-          <div className="w-full ">
+          <Box sx={{bgcolor:"yellow", display:"flex", justifyContent:"center", padding:1}}>
             <h3>Footer</h3>
-          </div>
+          </Box>
         </Main>
       </DrawerCustom>
     </Box>
