@@ -32,6 +32,7 @@ const RenderClientsList = ({
 
   return (
     <>
+        {items.length === 0 && <Typography>Sem clientes adicionados</Typography>}
       {items.map((item: Client) => (
         <ListItemButtonCustom
           key={item.id}
