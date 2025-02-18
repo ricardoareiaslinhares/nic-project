@@ -3,3 +3,9 @@ export interface MenuItemOptions {
     icon: React.ReactNode;
     onClick: (id: number) => void;
 }
+
+export interface ContentForModal {
+    title:string;
+    message:string;
+    action: (id: number) => void
+}

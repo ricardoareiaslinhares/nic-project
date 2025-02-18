@@ -7,14 +7,17 @@ import { MenuItemOptions } from "../../types";
 type Props = {
   menuItemOptions: MenuItemOptions[];
   id: number;
+  selectItemId: (id:number) => void
 };
 
-const MenuContext = ({ menuItemOptions, id }: Props) => {
+const MenuContext = ({ menuItemOptions, id, selectItemId }: Props) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation();
+    selectItemId(id)
+    console.log(id)
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
