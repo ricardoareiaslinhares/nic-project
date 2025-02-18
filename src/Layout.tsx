@@ -1,18 +1,58 @@
+import { useCallback, useState } from "react";
 import { Outlet } from "react-router";
-import SideBar from "./components/SideBar";
-import NavBar from "./components/NavBar";
+
+import DrawerCustom from "./components/SideBar/DrawerCustom";
+import { Box, styled, Toolbar } from "@mui/material";
 
 const Layout = () => {
-  return (
-    <main className="flex flex-1 flex-col  bg-red-200w-screen min-h-screen w-screen">
-        <NavBar />
-      <section className="flex flex-1 flex-row itens-start bg-amber-200">
-        <SideBar />
-        <Outlet />
-      </section>
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const drawerWidth = 240;
+  const handleDrawer = useCallback(() => {
+    setIsDrawerOpen((prev) => !prev);
+  }, []);
 
-      <h3>Footer</h3>
-    </main>
+  const Main = styled("main", {
+    shouldForwardProp: (prop) => prop !== "open",
+  })<{
+    open?: boolean;
+  }>(({ theme, open }) => ({
+    display: "flex",
+    flex: 1,
+    flexGrow: 1,
+    flexDirection: "column",
+    justifyContent: "space-around",
+    marginTop: 70,
+    paddingInline: 2,
+    marginLeft: open ? 0 : `-${drawerWidth}px`,
+    transition: theme.transitions.create("margin", {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+  }));
+
+  return (
+    <Box
+    sx={{
+      width: "100vw",
+      minHeight: "100vh",
+      paddingBottom: 1,
+      display: "flex",
+      flex: 1,
+      flexDirection: "column",
+      justifyContent: "space-between",
+    }}
+  >
+      <DrawerCustom
+        open={isDrawerOpen}
+        handleDrawer={handleDrawer}
+        drawerWidth={drawerWidth}
+      >
+        <Main open={isDrawerOpen}>
+          <Outlet />
+        </Main>
+      </DrawerCustom>
+          <h3>Footer</h3>
+    </Box>
   );
 };
 

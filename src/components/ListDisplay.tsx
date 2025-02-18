@@ -34,7 +34,6 @@ const ListDisplay = <T extends Item>({ items, proprieties, go2link, menuItemOpti
         display: "flex",
         flex: 1,
         flexDirection: "column",
-        height: "60px",
       }}
     >
       {items.map((item) => (
