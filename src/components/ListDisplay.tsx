@@ -3,6 +3,7 @@ import { Box, List, Typography, ListItemButton, ListItemText } from "@mui/materi
 import { useNavigate } from "react-router";
 import MenuContext from "./MenuContext/MenuContext";
 import { MenuItemOptions } from "../types";
+import SearchBar from "./SearchBar";
 
 interface Item {
   id: number;
@@ -36,6 +37,7 @@ const ListDisplay = <T extends Item>({ items, proprieties, go2link, menuItemOpti
         flexDirection: "column",
       }}
     >
+      <SearchBar/>
       {items.map((item) => (
         <ListItemButton
           key={item.id}
