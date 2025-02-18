@@ -1,5 +1,5 @@
 ;
-import { Box, List, Typography, ListItemButton, ListItemText } from "@mui/material";
+import { Box, List, Typography, ListItemButton, ListItemText, ListItem } from "@mui/material";
 import { useNavigate } from "react-router";
 import MenuContext from "./MenuContext/MenuContext";
 import { MenuItemOptions } from "../types";
@@ -39,8 +39,9 @@ const ListDisplay = <T extends Item>({ items, proprieties, go2link, menuItemOpti
     >
       <SearchBar/>
       {items.map((item) => (
+      <ListItem key={item.id} disablePadding sx={{bgcolor:"#f5f5f5", marginBottom:"4px"}}>
         <ListItemButton
-          key={item.id}
+
           onClick={() => handleListItemClick(item.id)}
           sx={{
             display: "flex",
@@ -61,6 +62,7 @@ const ListDisplay = <T extends Item>({ items, proprieties, go2link, menuItemOpti
             <MenuContext menuItemOptions={menuItemOptions} id={item.id} />
           </div> 
         </ListItemButton>
+        </ListItem>
       ))}
     </List>
   );
