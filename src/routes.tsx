@@ -1,7 +1,7 @@
 import Home from "./pages/Home";
 import { createBrowserRouter, RouteObject } from "react-router-dom";
 import NotFoundError from "./pages/NotFoundError";
-import Clients from "./pages/Clients";
+import Clients from "./pages/clients/Clients";
 import ClientDetails from "./pages/ClientDetails";
 import Layout from "./Layout";
 

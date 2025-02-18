@@ -57,7 +57,7 @@ const Layout = () => {
           </div>
           <Box
             sx={{
-              bgcolor: "yellow",
+              bgcolor: "#ddc750",
               display: "flex",
               justifyContent: "center",
               padding: 1,

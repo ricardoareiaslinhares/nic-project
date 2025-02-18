@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router";
-import ListDisplay from "../components/ListDisplay";
-import { MenuItemOptions } from "../types";
+import ListDisplay from "../../components/ListDisplay";
+import { MenuItemOptions } from "../../types";
 import EditIcon from "@mui/icons-material/Edit";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -25,10 +25,17 @@ const Clients = (props: Props) => {
     {
       label: "Apagar",
       icon: <DeleteIcon />,
-      onClick: (id:number) => { navigate(go2link + String(id)) },
+      onClick: () => { console.log("This fn is replaced by a modal open on ListDisplay")},
     },
   ];
-  return (
+
+  const contentForModalDelete = {
+    title: "Apagar Cliente",
+    message: "Tem certeza que deseja apagar o cliente?",
+    deleteAction: (id:number) => { console.log("apagar") },
+    cancelAction: () => { console.log("This fn is replaced by a modal open on ListDisplay") },
+  }
+  return ( 
     <ListDisplay
       items={[
         { id: 1, name: "Client 1", email: "email1" },
