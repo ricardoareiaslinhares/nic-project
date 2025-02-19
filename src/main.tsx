@@ -15,6 +15,7 @@ const queryClient = new QueryClient({
     queries: {
       staleTime: 10000,
       refetchOnWindowFocus:false,
+      placeholderData:(prev: any) => prev // VER COM UPDATES
       //gcTime: 10*60*1000
     }
   }

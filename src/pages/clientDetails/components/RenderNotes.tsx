@@ -3,7 +3,7 @@ import Note from "../../../entities/note";
 import { ContentForModal, MenuItemOptions } from "../../../types";
 import Modal from "../../../components/Modal/Modal";
 import ModalContentDelete from "../../../components/Modal/ModalContentDelete";
-import ListItemButtonCustom from "../../../components/ListItemButtonCustom";
+import ListItemButtonCustom from "../../../components/List/ListItemButtonCustom";
 import MenuContext from "../../../components/MenuContext/MenuContext";
 import { Box, Typography } from "@mui/material";
 

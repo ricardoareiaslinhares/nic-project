@@ -5,7 +5,9 @@ import { ContentForModal, MenuItemOptions } from "../../../types";
 import ModalContentDelete from "../../../components/Modal/ModalContentDelete";
 import { useCallback, useState } from "react";
 import Client from "../../../entities/client";
-import ListItemButtonCustom from "../../../components/ListItemButtonCustom";
+import ListItemButtonCustom from "../../../components/List/ListItemButtonCustom";
+import SearchBar from "../../../components/SearchBar2";
+
 
 type Props = {
   items: Client[];
@@ -30,10 +32,22 @@ const RenderClientsList = ({
     setSelectedItemId(id);
   }, []);
 
+
+const [filteredData, setFilteredData] = useState<Client[]>(items);
+
+const handleFilteredData = useCallback((input: string) => {
+  if (input) {
+    const newData = items.filter((item) => item.name.toLowerCase().includes(input.toLowerCase())); 
+    setFilteredData(newData);
+  } else {
+    setFilteredData(items)
+  }
+}, []);
   return (
     <>
         {items.length === 0 && <Typography>Sem clientes adicionados</Typography>}
-      {items.map((item: Client) => (
+        <SearchBar handleFilteredData={handleFilteredData}/>
+      {filteredData.map((item: Client) => (
         <ListItemButtonCustom
           key={item.id}
           onClick={() => navigate2ClientDetails(Number(item.id))}
