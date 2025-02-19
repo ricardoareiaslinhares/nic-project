@@ -59,7 +59,6 @@ const ClientDetails = (props: Props) => {
   };
 
   const NotesMenuOptions = new MenuOptions({
-    openFn: handleOpenNote,
     editFn: handleOpenNote,
     deleteFn: handleOpenModal,
   }).getOptions();
