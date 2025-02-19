@@ -4,13 +4,13 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 interface MenuOptionsConfig {
-  openFn: (id: number) => void;
+  openFn?: (id: number) => void;
   editFn: (id: number) => void;
   deleteFn: () => void;
 }
 
 export class MenuOptions {
-  private openFn: (id: number) => void;
+  private openFn?: (id: number) => void;
   private editFn: (id: number) => void;
   private deleteFn: () => void;
 
@@ -20,12 +20,7 @@ export class MenuOptions {
     this.deleteFn = deleteFn;
   }
   getOptions(): MenuItemOptions[] {
-    return [
-      {
-        label: "Abrir",
-        icon: <VisibilityIcon />,
-        onClick: this.openFn,
-      },
+    const options: MenuItemOptions[] = [
       {
         label: "Editar",
         icon: <EditIcon />,
@@ -37,5 +32,14 @@ export class MenuOptions {
         onClick: this.deleteFn,
       },
     ];
+
+    if (this.openFn) {
+      options.unshift({
+        label: "Abrir",
+        icon: <VisibilityIcon />,
+        onClick: this.openFn,
+      })}
+    return options
+
   }
 }
