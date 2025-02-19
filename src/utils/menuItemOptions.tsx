@@ -10,16 +10,16 @@ interface MenuOptionsConfig {
 }
 
 export class MenuOptions {
-  openFn: (id: number) => void;
-  editFn: (id: number) => void;
-  deleteFn: () => void;
+  private openFn: (id: number) => void;
+  private editFn: (id: number) => void;
+  private deleteFn: () => void;
 
   constructor({ openFn, editFn, deleteFn }: MenuOptionsConfig) {
     this.openFn = openFn;
     this.editFn = editFn;
     this.deleteFn = deleteFn;
   }
-  getItem(): MenuItemOptions[] {
+  getOptions(): MenuItemOptions[] {
     return [
       {
         label: "Abrir",
