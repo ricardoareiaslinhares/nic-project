@@ -6,15 +6,9 @@ import RenderClientsList from "./components/RenderClientsList";
 import { useQuery } from "@tanstack/react-query";
 import { getClients } from "../../api/clientsApi";
 import { MenuOptions } from "../../utils/menuItemOptions";
-import SearchBar from "../../components/SearchBar";
-import ListBar from "../../components/List/ListBar";
 
 const Clients = () => {
 
-  const [searchInput, setSearchInput] = useState("");
-  const handleSearchInput = useCallback((text:string)=>{
-    setSearchInput(text)
-  }, [])
   const { data, error, isLoading } = useQuery({
     queryKey: ["clients"],
     queryFn: () => getClients(),
@@ -39,7 +33,7 @@ const Clients = () => {
     openFn: navigate2ClientDetails,
     editFn: navigate2ClientDetails,
     deleteFn: handleOpenModal,
-  }).getItem()
+  }).getOptions()
 
   const contentForModal: ContentForModal = {
     title: "Apagar Cliente",
@@ -51,15 +45,13 @@ const Clients = () => {
   if (error) return <div>Error loading data</div>;
   if (isLoading) return <div>Loadingdata</div>;
 
-  let filteredData = data?.filter((item)=> item.name.toLowerCase().includes(searchInput) ) 
-  console.log(searchInput)
 
   return (
     <>
     <ListDisplay
       renderList={
         <RenderClientsList
-        items={filteredData ?? []}
+        items={data ?? []}
         navigate2ClientDetails={navigate2ClientDetails}
         menuItemOptions={clientMenuOptions}
         openModal={openModal}
