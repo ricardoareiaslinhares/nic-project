@@ -6,7 +6,7 @@ import ModalContentDelete from "../../../components/Modal/ModalContentDelete";
 import { useCallback, useState } from "react";
 import Client from "../../../entities/client";
 import ListItemButtonCustom from "../../../components/List/ListItemButtonCustom";
-import SearchBar from "../../../components/SearchBar2";
+import SearchBar from "../../../components/SearchBar";
 
 
 type Props = {

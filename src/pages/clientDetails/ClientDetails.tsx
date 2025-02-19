@@ -40,9 +40,9 @@ const ClientDetails = (props: Props) => {
 
   const [openNote, setOpenNote] = useState<number | null>(null);
 
-  const handleOpenNote = useCallback((id: number) => {
+  const handleOpenNote = useCallback((id: number | null) => {
     setOpenNote(id);
-  }, []);
+  }, [openNote]);
 
   const [openModal, setOpenModal] = useState(false);
 

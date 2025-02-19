@@ -2,14 +2,13 @@ import { Box, Paper, Typography } from "@mui/material";
 import Note from "../../../entities/note";
 
 type Props = {
-  note: Note | undefined
+  note: Note;
 };
 
-const NoteDetails = ({note }: Props) => {
-    console.log(note?.note)
+const NoteDetails = ({ note }: Props) => {
   return (
     <Box>
-      <Typography variant="h5">Notas sessão de {note?.date}</Typography>
+      <Typography variant="h5">Notas sessão de {note.date}</Typography>
       <Paper
         sx={{
           padding: 2,
@@ -17,7 +16,7 @@ const NoteDetails = ({note }: Props) => {
           maxWidth: "500px",
         }}
       >
-        {note?.note}
+        {note.note}
       </Paper>
     </Box>
   );
