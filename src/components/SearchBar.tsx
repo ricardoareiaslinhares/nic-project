@@ -5,9 +5,11 @@ import { ChangeEvent} from "react";
 
 type Props = {
   handleFilteredData: (input: string) => void;
+  placeHolder?: string
 };
 
-const SearchBar = ({ handleFilteredData }: Props) => {
+const SearchBar = ({ handleFilteredData, placeHolder="Procurar por nome" }: Props) => {
+  
   console.log("SearchBar runned");
 
   const inputHandle = (
@@ -31,7 +33,7 @@ const SearchBar = ({ handleFilteredData }: Props) => {
       <TextField
         size="small"
         id="outlined-controlled"
-        label="Procurar por nome"
+        label={placeHolder}
         color="secondary"
         sx={{ width: { xs: "200px", sm: "400px" } }}
         onChange={(e) => inputHandle(e)}
