@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { getClientById } from "../../api/clientsApi";
 import validateParamsId from "../../utils/validateParamsId";
 import ListDisplay from "../../components/List/ListDisplay";
-import RenderNotes from "./components/RenderNotes";
+import RenderNotesList from "./components/RenderNotesList";
 import { getNotesByClientId } from "../../api/notesApi";
 import { useCallback, useState } from "react";
 import { MenuOptions } from "../../utils/menuItemOptions";
@@ -62,7 +62,7 @@ const ClientDetails = (props: Props) => {
     openFn: handleOpenNote,
     editFn: handleOpenNote,
     deleteFn: handleOpenModal,
-  })
+  }).getOptions();
 
   if (clientIsLoading) return <p>Loading...</p>;
   if (clientError) return <p>{clientError.message}</p>;
@@ -94,10 +94,10 @@ const ClientDetails = (props: Props) => {
               maxWidth: "500px",
             }}
             renderList={
-              <RenderNotes
+              <RenderNotesList
                 items={notesData ?? []}
-                openNote={handleOpenNote}
-                menuItemOptions={NotesMenuOptions.getItem()}
+                handleOpenNote={handleOpenNote}
+                menuItemOptions={NotesMenuOptions}
                 openModal={openModal}
                 handleOpenModal={handleOpenModal}
                 contentForModal={contentForModal}
@@ -107,8 +107,7 @@ const ClientDetails = (props: Props) => {
 
           {openNote !== null && notesData ? (
             <NoteDetails
-              noteContent={notesData![openNote].note}
-              openNote={openNote}
+              note={notesData.find((note) => Number(note.id) === openNote)!}
             />
           ) : (
             <></>
