@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import { getClientById } from "../../api/clientsApi";
 import validateParamsId from "../../utils/validateParamsId";
-import ListDisplay from "../../components/ListDisplay";
+import ListDisplay from "../../components/List/ListDisplay";
 import RenderNotes from "./components/RenderNotes";
 import { getNotesByClientId } from "../../api/notesApi";
 import { useCallback, useState } from "react";
@@ -62,7 +62,7 @@ const ClientDetails = (props: Props) => {
     openFn: handleOpenNote,
     editFn: handleOpenNote,
     deleteFn: handleOpenModal,
-  }).getItem();
+  })
 
   if (clientIsLoading) return <p>Loading...</p>;
   if (clientError) return <p>{clientError.message}</p>;
@@ -97,7 +97,7 @@ const ClientDetails = (props: Props) => {
               <RenderNotes
                 items={notesData ?? []}
                 openNote={handleOpenNote}
-                menuItemOptions={NotesMenuOptions}
+                menuItemOptions={NotesMenuOptions.getItem()}
                 openModal={openModal}
                 handleOpenModal={handleOpenModal}
                 contentForModal={contentForModal}
