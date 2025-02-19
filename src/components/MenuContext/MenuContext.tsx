@@ -75,7 +75,7 @@ const MenuContext = ({ menuItemOptions, id, selectItemId }: Props) => {
           p: 2,
         }}
       >
-        <MoreVertIcon />
+        <MoreVertIcon color="primary" />
       </Button>
       <Menu
         id="demo-customized-menu"
