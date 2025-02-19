@@ -7,7 +7,7 @@ import { useCallback, useState } from "react";
 import Client from "../../../entities/client";
 import ListItemButtonCustom from "../../../components/List/ListItemButtonCustom";
 import SearchBar from "../../../components/SearchBar";
-
+import ContentMenu from "../../../components/ContentMenu";
 
 type Props = {
   items: Client[];
@@ -32,21 +32,22 @@ const RenderClientsList = ({
     setSelectedItemId(id);
   }, []);
 
+  const [filteredData, setFilteredData] = useState<Client[]>(items);
 
-const [filteredData, setFilteredData] = useState<Client[]>(items);
-
-const handleFilteredData = useCallback((input: string) => {
-  if (input) {
-    const newData = items.filter((item) => item.name.toLowerCase().includes(input.toLowerCase())); 
-    setFilteredData(newData);
-  } else {
-    setFilteredData(items)
-  }
-}, []);
+  const handleFilteredData = useCallback((input: string) => {
+    if (input) {
+      const newData = items.filter((item) =>
+        item.name.toLowerCase().includes(input.toLowerCase())
+      );
+      setFilteredData(newData);
+    } else {
+      setFilteredData(items);
+    }
+  }, []);
   return (
     <>
-        {items.length === 0 && <Typography>Sem clientes adicionados</Typography>}
-        <SearchBar handleFilteredData={handleFilteredData}/>
+      {items.length === 0 && <Typography>Sem clientes adicionados</Typography>}
+      <ContentMenu handleFilteredData={handleFilteredData} />
       {filteredData.map((item: Client) => (
         <ListItemButtonCustom
           key={item.id}
