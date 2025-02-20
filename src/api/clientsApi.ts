@@ -49,10 +49,10 @@ export const updateClient = async (id: number, clientData:Partial<Client>) : Pro
     }
 }
 
-export const deleteClient = async (id:number) : Promise<boolean|undefined> => {
+export const deleteClient = async (id:number) : Promise<number|undefined> => {
     try {
         await api.delete(`${id}`)
-        return true
+        return Number(id)
     } catch (error) {
         console.error(`Error deleting client with Id ${id}:`, error);
         throw error;

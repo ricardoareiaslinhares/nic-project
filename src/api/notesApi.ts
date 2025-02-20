@@ -60,10 +60,10 @@ export const updateNote = async (id: number, noteData: Partial<Note>): Promise<N
   }
 };
 
-export const deleteNote = async (id: number): Promise<boolean | undefined> => {
+export const deleteNote = async (id: number): Promise<number | undefined> => {
   try {
     await api.delete(`${id}`);
-    return true;
+    return Number(id);
   } catch (error) {
     console.error(`Error deleting note with Id ${id}:`, error);
     throw error;
