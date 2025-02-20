@@ -8,7 +8,7 @@ const getItemFromListById = <T extends { id: string }>(
 
   const item = data.find((item) => Number(item.id) === id);
   if (!item) {
-    return {name :""}
+    return {name :"", date:""}
   }
   return item;
 };
