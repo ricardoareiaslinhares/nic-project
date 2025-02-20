@@ -8,7 +8,7 @@ const getItemFromListById = <T extends { id: string }>(
 
   const item = data.find((item) => Number(item.id) === id);
   if (!item) {
-    throw new Error(`getItemFromListById: item with id ${id} not found`);
+    return {name :""}
   }
   return item;
 };
