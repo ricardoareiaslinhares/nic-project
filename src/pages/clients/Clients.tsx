@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router";
 import ListDisplay from "../../components/List/ListDisplay";
 import RenderClientsList from "./components/RenderClientsList";
-import { getClients } from "../../api/clientsApi";
+import { getClients } from "../../api/clientsApi"; 
 import { MenuOptions } from "../../utils/menuItemOptions";
 import useClientModals from "../../hooks/useClientModals";
 import useQueryGet from "../../hooks/useQueryGet";
