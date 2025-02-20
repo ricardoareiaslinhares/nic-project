@@ -20,3 +20,5 @@ const useQueryDelete = ({ deletefn, queryKey }: Props) => {
 };
 
 export default useQueryDelete;
+
+
