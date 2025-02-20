@@ -4,23 +4,24 @@ import Client from "../entities/client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createClient, updateClient } from "../api/clientsApi";
 
-
-
 type Props = {
-
   create: boolean;
-  getClientData: (id:number) => Client
+  getClientData: (id: number) => Client;
   newId: number;
-  selectedId:number
-  modalControl: () => void
-}
+  selectedId: number | null
+  modalControl: () => void;
+};
 
 const FormDefault = (props: Props) => {
-    console.log("form data runned")
+  console.log("form data runned");
   const { create, newId, modalControl, selectedId, getClientData } = props;
-  const data = getClientData(selectedId);
+  
+  const data = selectedId !== null ? getClientData(selectedId) : {}
+
   const { register, handleSubmit } = useForm<Client>({
-    defaultValues: create ? {id: newId.toString(), name: "", email: ""} : {...data}
+    defaultValues: create
+      ? { id: newId.toString(), name: "", email: "" }
+      : { ...data },
   });
 
   const queryClient = useQueryClient();
@@ -33,7 +34,7 @@ const FormDefault = (props: Props) => {
   } = useMutation({
     mutationFn: (newData: Client) => createClient(newData),
     onSuccess: () => {
-      queryClient.invalidateQueries({queryKey:["clients"]});
+      queryClient.invalidateQueries({ queryKey: ["clients"] });
     },
   });
 
@@ -45,7 +46,7 @@ const FormDefault = (props: Props) => {
   } = useMutation({
     mutationFn: (newData: Client) => updateClient(Number(data.id), newData),
     onSuccess: () => {
-      queryClient.invalidateQueries({queryKey:["clients"]});
+      queryClient.invalidateQueries({ queryKey: ["clients"] });
     },
   });
 
@@ -53,12 +54,10 @@ const FormDefault = (props: Props) => {
     if (create) {
       mutateCreate(newData);
     } else {
-    mutateUpdate(newData);
+      mutateUpdate(newData);
     }
     modalControl();
   };
-
-
 
   return (
     <Box

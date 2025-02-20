@@ -63,7 +63,7 @@ const RenderClientsList = ({
       } else {
         setFilteredData(items);
       }
-      console.log("handleFilteredData ")
+      console.log("handleFilteredData ");
     },
     [items]
   );
@@ -102,19 +102,17 @@ const RenderClientsList = ({
 
   const newClientId = getIdOfLastListItem(items) + 1;
 
-/*   const selectClientForEdit = ((items: Client[]) => {
+  /*   const selectClientForEdit = ((items: Client[]) => {
     //console.log("selectClientForEdit runned");
     return (id: number) => {
       return getItemFromListById(items, id);
     };
   })(items); */
 
-
   const selectClientForEdit2 = useMemo(() => {
     //console.log("selectClientForEdit2 runned");
     return (id: number) => getItemFromListById(items, id);
   }, [items]);
-
 
   return (
     <>
@@ -152,20 +150,18 @@ const RenderClientsList = ({
         handleOpenModal={handleOpenModalClient}
         disableOutsideClick
       >
-        {selectedItemId !== null && (
-          <ModalContentClient
-            cancelAction={closeModalClient}
-            content={contentForModalClient}
-          >
-            <FormDefault
-              create={createClient}
-              newId={newClientId}
-              selectedId={selectedItemId}
-              getClientData={selectClientForEdit2}
-              modalControl={closeModalClient}
-            />
-          </ModalContentClient>
-        )}
+        <ModalContentClient
+          cancelAction={closeModalClient}
+          content={contentForModalClient}
+        >
+          <FormDefault
+            create={createClient}
+            newId={newClientId}
+            selectedId={selectedItemId}
+            getClientData={selectClientForEdit2}
+            modalControl={closeModalClient}
+          />
+        </ModalContentClient>
       </Modal>
     </>
   );
