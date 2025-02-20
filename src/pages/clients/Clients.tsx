@@ -1,18 +1,18 @@
 import { useNavigate } from "react-router";
 import ListDisplay from "../../components/List/ListDisplay";
 import RenderClientsList from "./components/RenderClientsList";
-import { useQuery } from "@tanstack/react-query";
 import { getClients } from "../../api/clientsApi";
 import { MenuOptions } from "../../utils/menuItemOptions";
 import useClientModals from "../../hooks/useClientModals";
-
+import useQueryGet from "../../hooks/useQueryGet";
 
 const Clients = () => {
-  const { data, error, isLoading } = useQuery({
-    queryKey: ["clients"],
-    queryFn: () => getClients(),
+  const { data, error, isLoading } = useQueryGet({
+    getFn: getClients,
+    queryKey: "clients",
   });
-  console.log("Client Page rendered")
+
+  console.log("Client Page rendered");
 
   const navigate = useNavigate();
   const go2link = "/clients/";
@@ -22,14 +22,14 @@ const Clients = () => {
     console.log(id);
   };
 
-// Controlls for create/edit forms Modal and delete warning Modal
+  // Controlls for create/edit forms Modal and delete warning Modal
   const clientModals = useClientModals();
   const { openEditModal, ...clientModalsProps } = clientModals;
 
   const clientMenuOptions = new MenuOptions({
     openFn: navigateToClientDetails,
     editFn: clientModals.openEditModal,
-    deleteFn: clientModals.toggleModalDelete
+    deleteFn: clientModals.toggleModalDelete,
   }).getOptions();
 
   if (error) return <div>Error loading data</div>;
