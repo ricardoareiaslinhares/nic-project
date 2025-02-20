@@ -12,7 +12,7 @@ import Client from "../../../entities/client";
 import ListItemButtonCustom from "../../../components/List/ListItemButtonCustom";
 import ContentMenu from "../../../components/ContentMenu";
 import ModalContentClient from "./ModalContentClient";
-import FormDefault from "../../../components/FormDefault";
+import FormClient from "./FormClient";
 import getIdOfLastListItem from "../../../utils/getIdOfLastListItem";
 import useQueryDelete from "../../../hooks/useQueryDelete";
 import { deleteClient } from "../../../api/clientsApi";
@@ -40,9 +40,14 @@ const RenderClientsList = ({
   menuItemOptions,
   clientModals,
 }: Props) => {
-
-  const { isCreateEditModalOpen, isCreateMode, openCreateModal, closeModal, isDeleteModalOpen, toggleModalDelete } =
-    clientModals;
+  const {
+    isCreateEditModalOpen,
+    isCreateMode,
+    openCreateModal,
+    closeModal,
+    isDeleteModalOpen,
+    toggleModalDelete,
+  } = clientModals;
 
   const [selectedItemId, setSelectedItemId] = useState<number | null>(null);
 
@@ -83,7 +88,7 @@ const RenderClientsList = ({
 
   const contentForModalDeleteFn: ContentForModalDeleteFn<Client> = (data) => {
     return (id: number) => {
-      const name = getItemFromListById(data, id).name;
+      const name = getItemFromListById(data, id).name
       return {
         title: "Apagar Cliente",
         message: `Tem certeza que deseja apagar cliente ${name} ?`,
@@ -156,7 +161,7 @@ const RenderClientsList = ({
           cancelAction={closeModal}
           content={contentForModalClient}
         >
-          <FormDefault
+          <FormClient
             create={isCreateMode}
             newId={newClientId}
             selectedId={selectedItemId}
