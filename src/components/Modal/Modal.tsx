@@ -23,6 +23,7 @@ type Props = {
   disableOutsideClick?: boolean;
 };
 const Modal = ({ open, handleOpenModal, children, disableOutsideClick=false }: Props) => {
+  console.log("Modal base runned")
   return (
     <div>
       <ModalMui

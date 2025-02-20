@@ -18,35 +18,40 @@ import useQueryDelete from "../../../hooks/useQueryDelete";
 import { deleteClient } from "../../../api/clientsApi";
 import getItemFromListById from "../../../utils/getItemFromListById";
 
+type ClientModals = {
+  isCreateEditModalOpen: boolean;
+  isCreateMode: boolean;
+  openCreateModal: () => void;
+  closeModal: () => void;
+  isDeleteModalOpen: boolean;
+  toggleModalDelete: () => void;
+};
+
 type Props = {
   items: Client[];
-  navigate2ClientDetails: (id: number) => void;
+  navigateToClientDetails: (id: number) => void;
   menuItemOptions: MenuItemOptions[];
-  openModalDanger: boolean;
-  handleOpenModalDanger: () => void;
-  openModalClient: boolean;
-  handleOpenModalClient: () => void;
-  createClient: boolean;
-  closeModalClient: () => void;
+  clientModals: ClientModals;
 };
 
 const RenderClientsList = ({
   items,
-  navigate2ClientDetails,
+  navigateToClientDetails,
   menuItemOptions,
-  openModalDanger,
-  handleOpenModalDanger,
-  openModalClient,
-  handleOpenModalClient,
-  createClient,
-  closeModalClient,
+  clientModals,
 }: Props) => {
+
+  const { isCreateEditModalOpen, isCreateMode, openCreateModal, closeModal, isDeleteModalOpen, toggleModalDelete } =
+    clientModals;
+
   const [selectedItemId, setSelectedItemId] = useState<number | null>(null);
 
   const handleSelectItemId = useCallback((id: number) => {
     setSelectedItemId(id);
   }, []);
 
+  // To update the Client list based on the search bar;
+  // I pass the filteredList to render
   const [filteredData, setFilteredData] = useState<Client[]>(items);
 
   useEffect(() => {
@@ -67,7 +72,7 @@ const RenderClientsList = ({
     },
     [items]
   );
-  //
+  //---
 
   const {
     mutate: mutateDelete,
@@ -75,7 +80,6 @@ const RenderClientsList = ({
     isPending: isPendingDelete,
     isSuccess: isSuccessDelete,
   } = useQueryDelete({ deletefn: deleteClient, queryKey: "clients" });
-  ///
 
   const contentForModalDeleteFn: ContentForModalDeleteFn<Client> = (data) => {
     return (id: number) => {
@@ -84,22 +88,20 @@ const RenderClientsList = ({
         title: "Apagar Cliente",
         message: `Tem certeza que deseja apagar cliente ${name} ?`,
         action: () => {
-          handleOpenModalDanger();
+          toggleModalDelete();
           mutateDelete(id);
         },
       };
     };
   };
-
   const contentForModalDelete = contentForModalDeleteFn(items);
 
   const contentForModalClient: ContentForModalBase = {
-    title: createClient ? "Adicionar Cliente" : "Editar Cliente",
-    message: createClient
+    title: isCreateMode ? "Adicionar Cliente" : "Editar Cliente",
+    message: isCreateMode
       ? "Por favor preencha todos os campos"
       : "Por favor modifique os campos que pretende atualizar",
   };
-
   const newClientId = getIdOfLastListItem(items) + 1;
 
   /*   const selectClientForEdit = ((items: Client[]) => {
@@ -119,12 +121,12 @@ const RenderClientsList = ({
       {items.length === 0 && <Typography>Sem clientes adicionados</Typography>}
       <ContentMenu
         handleFilteredData={handleFilteredData}
-        addNewClick={handleOpenModalClient}
+        addNewClick={openCreateModal}
       />
       {filteredData.map((item: Client) => (
         <ListItemButtonCustom
           key={item.id}
-          onClick={() => navigate2ClientDetails(Number(item.id))}
+          onClick={() => navigateToClientDetails(Number(item.id))}
         >
           <Typography variant="h6">{item.name}</Typography>
           <div>
@@ -136,30 +138,30 @@ const RenderClientsList = ({
           </div>
         </ListItemButtonCustom>
       ))}
-      <Modal open={openModalDanger} handleOpenModal={handleOpenModalDanger}>
+      <Modal open={isDeleteModalOpen} handleOpenModal={toggleModalDelete}>
         {selectedItemId !== null && (
           <ModalContentDelete
-            cancelAction={handleOpenModalDanger}
+            cancelAction={toggleModalDelete}
             selectedId={selectedItemId}
             content={contentForModalDelete}
           />
         )}
       </Modal>
       <Modal
-        open={openModalClient}
-        handleOpenModal={handleOpenModalClient}
+        open={isCreateEditModalOpen}
+        handleOpenModal={openCreateModal}
         disableOutsideClick
       >
         <ModalContentClient
-          cancelAction={closeModalClient}
+          cancelAction={closeModal}
           content={contentForModalClient}
         >
           <FormDefault
-            create={createClient}
+            create={isCreateMode}
             newId={newClientId}
             selectedId={selectedItemId}
             getClientData={selectClientForEdit2}
-            modalControl={closeModalClient}
+            modalControl={closeModal}
           />
         </ModalContentClient>
       </Modal>

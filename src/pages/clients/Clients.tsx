@@ -1,10 +1,10 @@
 import { useNavigate } from "react-router";
 import ListDisplay from "../../components/List/ListDisplay";
-import { useCallback, useState } from "react";
 import RenderClientsList from "./components/RenderClientsList";
 import { useQuery } from "@tanstack/react-query";
 import { getClients } from "../../api/clientsApi";
 import { MenuOptions } from "../../utils/menuItemOptions";
+import useClientModals from "../../hooks/useClientModals";
 
 
 const Clients = () => {
@@ -17,43 +17,19 @@ const Clients = () => {
   const navigate = useNavigate();
   const go2link = "/clients/";
 
-  const navigate2ClientDetails = (id: number) => {
+  const navigateToClientDetails = (id: number) => {
     navigate(go2link + String(id));
     console.log(id);
   };
 
-  // To create modal for delete Client
-  const [openModalDanger, setOpenModalDanger] = useState(false);
-
-  const handleOpenModalDanger = useCallback(() => {
-    setOpenModalDanger((prev) => !prev);
-  }, []);
-//---
-
-// To create modal for create / update client
-  const [openModalClient, setOpenModalClient] = useState(false);
-  const [createClient, setCreateClient] = useState(true); // true = create, false = update
-
-  const handleOpenModalClient = useCallback(() => {
-    setCreateClient(true);
-    setOpenModalClient((prev) => !prev);
-  }, []);
-
-  const closeModalClient = useCallback(() => {
-    setOpenModalClient(false);
-  }, []);
-  
-  const editClient = useCallback((id: number) => {
-    setCreateClient(false);
-    setOpenModalClient((prev) => !prev);
-  },[])
-
-  // ----
+// Controlls for create/edit forms Modal and delete warning Modal
+  const clientModals = useClientModals();
+  const { openEditModal, ...clientModalsProps } = clientModals;
 
   const clientMenuOptions = new MenuOptions({
-    openFn: navigate2ClientDetails,
-    editFn: editClient,
-    deleteFn: handleOpenModalDanger,
+    openFn: navigateToClientDetails,
+    editFn: clientModals.openEditModal,
+    deleteFn: clientModals.toggleModalDelete
   }).getOptions();
 
   if (error) return <div>Error loading data</div>;
@@ -65,15 +41,9 @@ const Clients = () => {
         renderList={
           <RenderClientsList
             items={data ?? []}
-            navigate2ClientDetails={navigate2ClientDetails}
+            navigateToClientDetails={navigateToClientDetails}
             menuItemOptions={clientMenuOptions}
-            openModalDanger={openModalDanger}
-            openModalClient={openModalClient}
-            handleOpenModalDanger={handleOpenModalDanger}
-            handleOpenModalClient={handleOpenModalClient}
-            createClient={createClient}
-            closeModalClient={closeModalClient}
-
+            clientModals={clientModalsProps}
           />
         }
       ></ListDisplay>

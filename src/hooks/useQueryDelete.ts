@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 type Props = {
     deletefn: (id: number) => Promise<boolean | undefined>;
@@ -18,3 +18,4 @@ const useQueryDelete = ({deletefn, queryKey}: Props) => {
 };
 
 export default useQueryDelete
+

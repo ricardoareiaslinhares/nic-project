@@ -1,14 +1,14 @@
 import { Box, Button, Typography } from "@mui/material";
-import FormDefault from "../../../components/FormDefault";
-import { ContentForModalMutate } from "../../../types";
+import { ContentForModalBase } from "../../../types";
 
 type Props = {
   cancelAction: () => void;
-  content: ContentForModalMutate;
+  content: ContentForModalBase;
   children: React.ReactNode;
 };
 const ModalContentClient = ({ cancelAction, content, children }: Props) => {
   const { title, message } = content;
+  console.log("content", content)
   return (
     <Box
       sx={{

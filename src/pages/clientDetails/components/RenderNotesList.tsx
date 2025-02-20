@@ -49,15 +49,15 @@ const RenderNotesList = ({
     }
   }, []);
 
-  console.log(selectedItemId);
-
   return (
     <>
       {items.length === 0 && <Typography>Sem notas adicionadas</Typography>}
-      <ContentMenu
-        handleFilteredData={handleFilteredData}
-        searchPlaceHolder={"Procurar por palavras-chave"}
-      />
+      {items.length > 0 && (
+        <ContentMenu
+          handleFilteredData={handleFilteredData}
+          searchPlaceHolder={"Procurar por palavras-chave"}
+        />
+      )}
       {filteredData.map((item: Note) => (
         <ListItemButtonCustom
           key={item.id}

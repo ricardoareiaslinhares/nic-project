@@ -10,6 +10,7 @@ import { useCallback, useState } from "react";
 import { MenuOptions } from "../../utils/menuItemOptions";
 import { ContentForModal } from "../../types";
 import NoteDetails from "./components/NoteDetails";
+import useQueryDetails from "../../hooks/useQueryDetails";
 
 type Props = {};
 
@@ -23,26 +24,33 @@ const ClientDetails = (props: Props) => {
     data: clientData,
     error: clientError,
     isLoading: clientIsLoading,
-  } = useQuery({
-    queryKey: ["clients", id],
-    queryFn: () => getClientById(numericId),
+  } = useQueryDetails({
+    getByIdFn: getClientById,
+    id: numericId,
+    queryKey: "clients",
   });
+
+  // Notes related
 
   const {
     data: notesData,
     error: notesError,
     isLoading: notesIsLoading,
-  } = useQuery({
-    queryKey: ["notes", numericId],
-    queryFn: () => getNotesByClientId(numericId),
+  } = useQueryDetails({
+    getByIdFn: getNotesByClientId,
+    id: numericId,
+    queryKey: "notes",
   });
-  // Notes related
+
 
   const [openNote, setOpenNote] = useState<number | null>(null);
 
-  const handleOpenNote = useCallback((id: number | null) => {
-    setOpenNote(id);
-  }, [openNote]);
+  const handleOpenNote = useCallback(
+    (id: number | null) => {
+      setOpenNote(id);
+    },
+    [openNote]
+  );
 
   const [openModal, setOpenModal] = useState(false);
 
