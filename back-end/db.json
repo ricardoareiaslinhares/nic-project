@@ -2,7 +2,7 @@
   "clients": [
     {
       "id": "1",
-      "name": "Alice Smith 2",
+      "name": "Alice Smith",
       "email": "alice.smith@example.com"
     },
     {
@@ -14,11 +14,6 @@
       "id": "3",
       "name": "Charlie Brown",
       "email": "charlie.brown@example.com"
-    },
-    {
-      "id": "4",
-      "name": "ss",
-      "email": "s"
     }
   ],
   "sessionNotes": [
