@@ -17,7 +17,7 @@ const ClientDetails = (props: Props) => {
   console.log("ClientDetails rendered!");
   const { id } = useParams();
   const numericId = validateParamsId(id);
-  if (!numericId) return <p>Invalid client Id</p>;
+  if (!numericId) return <p>Id de Cliente inválido</p>;
 
   const {
     data: clientData,

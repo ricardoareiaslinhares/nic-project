@@ -10,8 +10,6 @@ type Props = {
 
 const SearchBar = ({ handleFilteredData, placeHolder="Procurar por nome" }: Props) => {
   
-  console.log("SearchBar runned");
-
   const inputHandle = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {

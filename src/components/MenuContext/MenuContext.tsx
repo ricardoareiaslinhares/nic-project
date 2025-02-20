@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {  useState } from "react";
 import { Button, Menu } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import MenuContextItem from "./MenuContextItem";
@@ -7,17 +7,23 @@ import { MenuItemOptions } from "../../types";
 type Props = {
   menuItemOptions: MenuItemOptions[];
   id: number;
-  selectItemId: (id:number) => void
+  selectItemId: (id: number) => void;
 };
 
-const MenuContext = ({ menuItemOptions, id, selectItemId }: Props) => {
+const MenuContext = ({
+  menuItemOptions,
+  id,
+  selectItemId,
+}: Props) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+
+
   const open = Boolean(anchorEl);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation();
-    selectItemId(id)
-    console.log(id)
+    selectItemId(id);
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
@@ -28,6 +34,10 @@ const MenuContext = ({ menuItemOptions, id, selectItemId }: Props) => {
     options: MenuItemOptions[];
     handleClose: () => void;
   };
+  const onClickAlsoClose = (fn:()=>void) => {
+    setAnchorEl(null);
+    fn();
+  }
   const MenuItemClient = ({ options, handleClose }: MenuItemClientProps) => {
     return (
       <>
@@ -35,7 +45,7 @@ const MenuContext = ({ menuItemOptions, id, selectItemId }: Props) => {
           <MenuContextItem
             key={index}
             onClose={handleClose}
-            onClick={() => item.onClick(id)}
+            onClick={() => onClickAlsoClose(() => item.onClick(id))}
             sx={{ color: item.label === "Apagar" ? "red" : "black" }}
           >
             {item.icon}

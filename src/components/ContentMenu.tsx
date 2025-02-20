@@ -5,16 +5,16 @@ import AddNew from './AddNew'
 type Props = {
   handleFilteredData:  (input: string) => void;
   searchPlaceHolder?: string
+  addNewClick: () => void
 }
 
-const ContentMenu = ({handleFilteredData, searchPlaceHolder}: Props) => {
+const ContentMenu = ({handleFilteredData, searchPlaceHolder, addNewClick}: Props) => {
   return (
     <Box sx={{display:"flex", flex:1, alignItems:"center", flexDirection:"row", justifyContent:"start" }}>
         <div>
         <SearchBar handleFilteredData={handleFilteredData} placeHolder={searchPlaceHolder}/>
         </div>
-        <AddNew/>
-
+        <AddNew onClick={addNewClick}/>
     </Box>
   )
 }

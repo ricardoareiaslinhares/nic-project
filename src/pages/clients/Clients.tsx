@@ -1,66 +1,83 @@
 import { useNavigate } from "react-router";
 import ListDisplay from "../../components/List/ListDisplay";
-import { ContentForModal, MenuItemOptions } from "../../types";
 import { useCallback, useState } from "react";
 import RenderClientsList from "./components/RenderClientsList";
 import { useQuery } from "@tanstack/react-query";
 import { getClients } from "../../api/clientsApi";
 import { MenuOptions } from "../../utils/menuItemOptions";
 
-const Clients = () => {
 
+const Clients = () => {
   const { data, error, isLoading } = useQuery({
     queryKey: ["clients"],
     queryFn: () => getClients(),
   });
-  console.log(data);
+  console.log("Client Page rendered")
 
   const navigate = useNavigate();
   const go2link = "/clients/";
-
-  const [openModal, setOpenModal] = useState(false);
-
-  const handleOpenModal = useCallback(() => {
-    setOpenModal((prev) => !prev);
-  }, []);
 
   const navigate2ClientDetails = (id: number) => {
     navigate(go2link + String(id));
     console.log(id);
   };
 
+  // To create modal for delete Client
+  const [openModalDanger, setOpenModalDanger] = useState(false);
+
+  const handleOpenModalDanger = useCallback(() => {
+    setOpenModalDanger((prev) => !prev);
+  }, []);
+//---
+
+// To create modal for create / update client
+  const [openModalClient, setOpenModalClient] = useState(false);
+  const [createClient, setCreateClient] = useState(true); // true = create, false = update
+
+  const handleOpenModalClient = useCallback(() => {
+    setCreateClient(true);
+    setOpenModalClient((prev) => !prev);
+  }, []);
+
+  const closeModalClient = useCallback(() => {
+    setOpenModalClient(false);
+  }, []);
+  
+  const editClient = useCallback((id: number) => {
+    setCreateClient(false);
+    setOpenModalClient((prev) => !prev);
+  },[])
+
+  // ----
+
   const clientMenuOptions = new MenuOptions({
     openFn: navigate2ClientDetails,
-    editFn: navigate2ClientDetails,
-    deleteFn: handleOpenModal,
-  }).getOptions()
+    editFn: editClient,
+    deleteFn: handleOpenModalDanger,
+  }).getOptions();
 
-  const contentForModal: ContentForModal = {
-    title: "Apagar Cliente",
-    message: "Tem certeza que deseja apagar o cliente?",
-    action: (id: number) => {
-      console.log("apagar", id);
-    },
-  };
   if (error) return <div>Error loading data</div>;
   if (isLoading) return <div>Loadingdata</div>;
 
-
   return (
     <>
-    <ListDisplay
-      renderList={
-        <RenderClientsList
-        items={data ?? []}
-        navigate2ClientDetails={navigate2ClientDetails}
-        menuItemOptions={clientMenuOptions}
-        openModal={openModal}
-        handleOpenModal={handleOpenModal}
-        contentForModal={contentForModal}
-        />
-      }
+      <ListDisplay
+        renderList={
+          <RenderClientsList
+            items={data ?? []}
+            navigate2ClientDetails={navigate2ClientDetails}
+            menuItemOptions={clientMenuOptions}
+            openModalDanger={openModalDanger}
+            openModalClient={openModalClient}
+            handleOpenModalDanger={handleOpenModalDanger}
+            handleOpenModalClient={handleOpenModalClient}
+            createClient={createClient}
+            closeModalClient={closeModalClient}
+
+          />
+        }
       ></ListDisplay>
-      </>
+    </>
   );
 };
 
