@@ -4,8 +4,16 @@ export interface MenuItemOptions {
     onClick: (id: number) => void;
 }
 
-export interface ContentForModal {
+export interface ContentForModalBase {
     title:string;
-    message:string;
-    action: (id: number) => void
+    message:string
 }
+
+export interface ContentForModalDelete extends ContentForModalBase {
+    action: () => void
+}
+
+export interface ContentForModalDeleteFn<T>{
+    (data:T[]):(id:number) => ContentForModalDelete
+}
+

@@ -9,19 +9,20 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
+  minWidth: 400,
+  bgcolor: "background.paper",  
   boxShadow: 24,
   p: 4,
+  borderRadius: "8px",
 };
 
 type Props = {
   open: boolean;
   handleOpenModal: () => void;
   children: React.ReactNode;
+  disableOutsideClick?: boolean;
 };
-const Modal = ({ open, handleOpenModal, children }: Props) => {
+const Modal = ({ open, handleOpenModal, children, disableOutsideClick=false }: Props) => {
   return (
     <div>
       <ModalMui
@@ -30,7 +31,7 @@ const Modal = ({ open, handleOpenModal, children }: Props) => {
         disableEnforceFocus
         disableRestoreFocus
         open={open}
-        onClose={handleOpenModal}
+        onClose={disableOutsideClick ? () => {} : handleOpenModal}
         closeAfterTransition
         slots={{ backdrop: Backdrop }}
         slotProps={{
