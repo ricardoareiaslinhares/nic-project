@@ -1,16 +1,18 @@
 import { Box, Typography } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import { getClientById } from "../../api/clientsApi";
 import validateParamsId from "../../utils/validateParamsId";
 import ListDisplay from "../../components/List/ListDisplay";
 import RenderNotesList from "./components/RenderNotesList";
-import { getNotesByClientId } from "../../api/notesApi";
+import { deleteNote, getNotesByClientId } from "../../api/notesApi";
 import { useCallback, useState } from "react";
 import { MenuOptions } from "../../utils/menuItemOptions";
-import { ContentForModal } from "../../types";
+import { ContentForModalBase, ContentForModalDeleteFn } from "../../types";
 import NoteDetails from "./components/NoteDetails";
 import useQueryDetails from "../../hooks/useQueryDetails";
+import Note from "../../entities/note";
+import getItemFromListById from "../../utils/getItemFromListById";
+import useQueryDelete from "../../hooks/useQueryDelete";
 
 type Props = {};
 
@@ -58,12 +60,25 @@ const ClientDetails = (props: Props) => {
     setOpenModal((prev) => !prev);
   }, []);
 
-  const contentForModal: ContentForModal = {
-    title: "Apagar Nota",
-    message: "Tem certeza que deseja apagar esta Nota?",
-    action: (id: number) => {
-      console.log("apagar", id);
-    },
+  const {
+    mutate: mutateDelete,
+    isError: isErrorDelete,
+    isPending: isPendingDelete,
+    isSuccess: isSuccessDelete,
+  } = useQueryDelete({ deletefn: deleteNote, queryKey: "notes" });
+
+  const contentForModalDeleteFn: ContentForModalDeleteFn<Note> = (data) => {
+    return (id: number) => {
+      const date = getItemFromListById(data, id).date
+      return {
+        title: "Apagar Nota",
+        message: `Tem certeza que deseja apagar a nota de ${date} ?`,
+        action: () => {
+          toggleModalDelete(); // mudar isto, fazer como no outro
+          mutateDelete(id);
+        },
+      };
+    };
   };
 
   const NotesMenuOptions = new MenuOptions({
