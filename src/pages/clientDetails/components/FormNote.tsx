@@ -1,58 +1,68 @@
-import { Box, Button, FormControl, Input, InputLabel, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  FormControl,
+  Input,
+  InputLabel,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useForm } from "react-hook-form";
 import Note from "../../../entities/note";
 import { createNote, updateNote } from "../../../api/notesApi";
 import useQueryCreate from "../../../hooks/useQueryCreate";
 import useQueryUpdate from "../../../hooks/useQueryUpdate";
 
-
 type Props = {
   create: boolean;
   getNoteData: (id: number) => Note;
   newId: number;
-  selectedId: number | null
+  selectedId: number | null;
   modalControl: () => void;
-  clientId: number
+  clientId: number;
 };
 
 const FormNote = (props: Props) => {
-  const { create, newId, modalControl, selectedId, getNoteData, clientId } = props;
-  
-  const data = selectedId !== null && getNoteData(selectedId) as Note
+  const { create, newId, modalControl, selectedId, getNoteData, clientId } =
+    props;
 
+  const data = selectedId !== null && (getNoteData(selectedId) as Note);
 
   function getFormattedDate(): string {
     return new Date().toISOString().split("T")[0];
   }
   const currentDate = getFormattedDate();
 
-
   const { register, handleSubmit } = useForm<Note>({
     defaultValues: create
-      ? { id: newId.toString(), clientId: clientId.toString(), date: currentDate, note: "" }
+      ? {
+          id: newId.toString(),
+          clientId: clientId.toString(),
+          date: currentDate,
+          note: "",
+        }
       : { ...data },
   });
-
 
   const {
     mutate: mutateCreate,
     isError: isErrorCreate,
     isPending: isPendingCreate,
-    isSuccess: isSuccessCreate, 
+    isSuccess: isSuccessCreate,
   } = useQueryCreate({
     createFn: createNote,
     queryKey: "notes",
-  })
+  });
 
-const {
-  mutate: mutateUpdate,
-  isError: isErrorUpdate,
-  isPending: isPendingUpdate,
-  isSuccess: isSuccessUpdate, 
-} = useQueryUpdate({
-  queryKey: "notes",
-  updateFn: updateNote,
-})
+  const {
+    mutate: mutateUpdate,
+    isError: isErrorUpdate,
+    isPending: isPendingUpdate,
+    isSuccess: isSuccessUpdate,
+  } = useQueryUpdate({
+    queryKey: "notes",
+    updateFn: updateNote,
+  });
 
   const onSubmit = (newData: Note) => {
     if (create) {
@@ -62,7 +72,6 @@ const {
     }
     modalControl();
   };
-
 
   return (
     <Box
@@ -84,8 +93,14 @@ const {
         </FormControl>
 
         <FormControl fullWidth>
-          <InputLabel htmlFor="input-note">Nota</InputLabel>
-          <Input id="input-note" autoComplete="off" {...register("note")} />
+          <TextField
+           id="input-note" autoComplete="off" 
+           label="Nota"
+           multiline
+           rows={6}
+           fullWidth
+           {...register("note")}
+          />
         </FormControl>
       </Box>
 
