@@ -12,7 +12,7 @@ const useQueryDelete = ({ deletefn, queryKey }: Props) => {
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [queryKey],
-        exact: true,
+        //exact: true,
 
       });
     },
