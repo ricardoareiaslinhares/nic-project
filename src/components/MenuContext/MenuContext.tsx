@@ -7,7 +7,7 @@ import { MenuItemOptions } from "../../types";
 type Props = {
   menuItemOptions: MenuItemOptions[];
   id: number;
-  selectItemId: (id: number) => void;
+  selectItemId: (id:number) => void;
 };
 
 const MenuContext = ({
@@ -17,12 +17,14 @@ const MenuContext = ({
 }: Props) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
+  //pegar no id e ir buscar o client id
 
 
   const open = Boolean(anchorEl);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation();
+    console.log("MENU CONTEXT CLICKED", id);
     selectItemId(id);
     setAnchorEl(event.currentTarget);
   };
