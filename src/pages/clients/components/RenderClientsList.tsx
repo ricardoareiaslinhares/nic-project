@@ -67,7 +67,6 @@ const RenderClientsList = ({
       } else {
         setFilteredData(items);
       }
-      console.log("handleFilteredData ");
     },
     [items]
   );
@@ -82,7 +81,7 @@ const RenderClientsList = ({
 
   const contentForModalDeleteFn: ContentForModalDeleteFn<Client> = (data) => {
     return (id: number) => {
-      const name = getItemFromListById(data, id)?.name
+      const name = getItemFromListById(data, id.toString())?.name
       return {
         title: "Apagar Cliente",
         message: `Tem certeza que deseja apagar cliente ${name} ?`,

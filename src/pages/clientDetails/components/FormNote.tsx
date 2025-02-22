@@ -5,13 +5,13 @@ import {
   Input,
   InputLabel,
   TextField,
-  Typography,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import Note from "../../../entities/note";
 import { createNote, updateNote } from "../../../api/notesApi";
 import useQueryCreate from "../../../hooks/useQueryCreate";
 import useQueryUpdate from "../../../hooks/useQueryUpdate";
+import getFormattedDate from "../../../utils/getFormattedDate";
 
 type Props = {
   create: boolean;
@@ -28,9 +28,7 @@ const FormNote = (props: Props) => {
 
   const data = selectedId !== null && (getNoteData(selectedId) as Note);
 
-  function getFormattedDate(): string {
-    return new Date().toISOString().split("T")[0];
-  }
+
   const currentDate = getFormattedDate();
 
   const { register, handleSubmit } = useForm<Note>({
@@ -92,7 +90,6 @@ const FormNote = (props: Props) => {
           <Input id="input-date" autoComplete="off" {...register("date")} />
         </FormControl>
 
-        <FormControl fullWidth>
           <TextField
            id="input-note" autoComplete="off" 
            label="Nota"
@@ -101,16 +98,15 @@ const FormNote = (props: Props) => {
            fullWidth
            {...register("note")}
           />
-        </FormControl>
       </Box>
 
       <Button
         type="submit"
         variant="contained"
         sx={{ mt: 2 }}
-        disabled={isPendingCreate}
+        disabled={isPendingCreate  || isPendingUpdate }
       >
-        {isPendingCreate
+        {isPendingCreate  || isPendingUpdate 
           ? "A enviar dados"
           : create
           ? "Criar Nota"
