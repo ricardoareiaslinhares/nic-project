@@ -6,6 +6,7 @@ type Props = {
 };
 
 const NoteDetails = ({ note }: Props) => {
+  if (!note) return <></>
   return (
     <Box>
       <Typography variant="h5">Notas sessão de {note.date}</Typography>

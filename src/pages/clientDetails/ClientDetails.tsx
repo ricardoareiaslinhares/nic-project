@@ -4,19 +4,13 @@ import { getClientById } from "../../api/clientsApi";
 import validateParamsId from "../../utils/validateParamsId";
 import ListDisplay from "../../components/List/ListDisplay";
 import RenderNotesList from "./components/RenderNotesList";
-import { deleteNote, getNotesByClientId } from "../../api/notesApi";
+import { getNotesByClientId } from "../../api/notesApi";
 import { useCallback, useState } from "react";
-import { MenuOptions } from "../../utils/menuItemOptions";
-import { ContentForModalBase, ContentForModalDeleteFn } from "../../types";
 import NoteDetails from "./components/NoteDetails";
 import useQueryDetails from "../../hooks/useQueryDetails";
-import Note from "../../entities/note";
-import getItemFromListById from "../../utils/getItemFromListById";
-import useQueryDelete from "../../hooks/useQueryDelete";
 
-type Props = {};
 
-const ClientDetails = (props: Props) => {
+const ClientDetails = () => {
   console.log("ClientDetails rendered!");
   const { id } = useParams();
   const numericId = validateParamsId(id);
@@ -44,47 +38,17 @@ const ClientDetails = (props: Props) => {
     queryKey: "notes",
   });
 
-
+  // Controls the NoteDetails componets
   const [openNote, setOpenNote] = useState<number | null>(null);
 
   const handleOpenNote = useCallback(
     (id: number | null) => {
       setOpenNote(id);
     },
-    [openNote]
+    []
   );
+  //--
 
-  const [openModal, setOpenModal] = useState(false);
-
-  const handleOpenModal = useCallback(() => {
-    setOpenModal((prev) => !prev);
-  }, []);
-
-  const {
-    mutate: mutateDelete,
-    isError: isErrorDelete,
-    isPending: isPendingDelete,
-    isSuccess: isSuccessDelete,
-  } = useQueryDelete({ deletefn: deleteNote, queryKey: "notes" });
-
-  const contentForModalDeleteFn: ContentForModalDeleteFn<Note> = (data) => {
-    return (id: number) => {
-      const date = getItemFromListById(data, id).date
-      return {
-        title: "Apagar Nota",
-        message: `Tem certeza que deseja apagar a nota de ${date} ?`,
-        action: () => {
-          toggleModalDelete(); // mudar isto, fazer como no outro
-          mutateDelete(id);
-        },
-      };
-    };
-  };
-
-  const NotesMenuOptions = new MenuOptions({
-    editFn: handleOpenNote,
-    deleteFn: handleOpenModal,
-  }).getOptions();
 
   if (clientIsLoading) return <p>Loading...</p>;
   if (clientError) return <p>{clientError.message}</p>;
@@ -119,10 +83,7 @@ const ClientDetails = (props: Props) => {
               <RenderNotesList
                 items={notesData ?? []}
                 handleOpenNote={handleOpenNote}
-                menuItemOptions={NotesMenuOptions}
-                openModal={openModal}
-                handleOpenModal={handleOpenModal}
-                contentForModal={contentForModal}
+                clientId={numericId}
               />
             }
           />
