@@ -5,6 +5,7 @@ import {
   ContentForModalBase,
   ContentForModalDeleteFn,
   MenuItemOptions,
+  ModalsControl,
 } from "../../../types";
 import ModalContentDelete from "../../../components/Modal/ModalContentDelete";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -18,20 +19,13 @@ import useQueryDelete from "../../../hooks/useQueryDelete";
 import { deleteClient } from "../../../api/clientsApi";
 import getItemFromListById from "../../../utils/getItemFromListById";
 
-type ClientModals = {
-  isCreateEditModalOpen: boolean;
-  isCreateMode: boolean;
-  openCreateModal: () => void;
-  closeModal: () => void;
-  isDeleteModalOpen: boolean;
-  toggleModalDelete: () => void;
-};
+
 
 type Props = {
   items: Client[];
   navigateToClientDetails: (id: number) => void;
   menuItemOptions: MenuItemOptions[];
-  clientModals: ClientModals;
+  clientModals: ModalsControl;
 };
 
 const RenderClientsList = ({
@@ -88,7 +82,7 @@ const RenderClientsList = ({
 
   const contentForModalDeleteFn: ContentForModalDeleteFn<Client> = (data) => {
     return (id: number) => {
-      const name = getItemFromListById(data, id).name
+      const name = getItemFromListById(data, id)?.name
       return {
         title: "Apagar Cliente",
         message: `Tem certeza que deseja apagar cliente ${name} ?`,
@@ -116,10 +110,18 @@ const RenderClientsList = ({
     };
   })(items); */
 
+  const fallBackClient:Client = {
+    id: "0",
+    name: "",
+    email: "",
+  }
+  // Fallback client is need because the fn runs upon componet mount
+  // and the id is null at that moment
+
   const selectClientForEdit2 = useMemo(() => {
-    //console.log("selectClientForEdit2 runned");
-    return (id: number) => getItemFromListById(items, id);
+    return (id: number) => getItemFromListById<Client>(items, id.toString()) ?? fallBackClient;
   }, [items]);
+
 
   return (
     <>
