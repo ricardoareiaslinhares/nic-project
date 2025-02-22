@@ -1,7 +1,6 @@
 import { Box, Button, FormControl, Input, InputLabel } from "@mui/material";
 import { useForm } from "react-hook-form";
 import Client from "../../../entities/client";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createClient, updateClient } from "../../../api/clientsApi";
 import useQueryUpdate from "../../../hooks/useQueryUpdate";
 import useQueryCreate from "../../../hooks/useQueryCreate";
@@ -18,7 +17,7 @@ const FormClient = (props: Props) => {
   console.log("form data runned");
   const { create, newId, modalControl, selectedId, getClientData } = props;
 
-  const data = selectedId !== null ? getClientData(selectedId) : {};
+  const data = selectedId !== null && getClientData(selectedId) as Client
 
   const { register, handleSubmit } = useForm<Client>({
     defaultValues: create
