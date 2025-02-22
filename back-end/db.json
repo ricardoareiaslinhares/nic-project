@@ -19,19 +19,19 @@
   "sessionNotes": [
     {
       "id": "1",
-      "clientId": 1,
+      "clientId": "1",
       "date": "2024-01-26",
       "note": "Discussed anxiety triggers.  Explored relaxation techniques."
     },
     {
       "id": "2",
-      "clientId": 1,
+      "clientId": "1",
       "date": "2024-02-02",
       "note": "Reviewed progress on relaxation exercises.  Introduced mindfulness meditation."
     },
     {
       "id": "3",
-      "clientId": 2,
+      "clientId": "2",
       "date": "2024-02-05",
       "note": "Focused on communication skills in relationships."
     }
