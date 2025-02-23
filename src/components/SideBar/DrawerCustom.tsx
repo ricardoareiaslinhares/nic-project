@@ -19,7 +19,7 @@ import {
 } from "@mui/icons-material";
 import NavBar from "./NavBar";
 import { useNavigate } from "react-router";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { getClients } from "../../api/clientsApi";
 
 const DrawerHeader = styled("div")(({ theme }) => ({
@@ -47,6 +47,17 @@ const DrawerCustom = ({ open, drawerWidth, handleDrawer, children }: Props) => {
     } else {
       queryClient.invalidateQueries({ queryKey: ["clients"] });
     }
+  };
+
+  // Prefecth Queries on hover, except if we are on the clients page
+  const handleClientsHover = () => {
+    if (location.pathname === "/clients") return;
+    setTimeout(() => {
+      queryClient.prefetchQuery({
+        queryKey: ["clients"],
+        queryFn: getClients,
+      });
+    }, 300);
   };
 
   const drawerItems = [
@@ -92,7 +103,10 @@ const DrawerCustom = ({ open, drawerWidth, handleDrawer, children }: Props) => {
         <List>
           {drawerItems.map((item, index) => (
             <ListItem key={index} disablePadding>
-              <ListItemButton onClick={() => handleClientsClick(item.path)}>
+              <ListItemButton
+                onMouseEnter={handleClientsHover}
+                onClick={() => handleClientsClick(item.path)}
+              >
                 <ListItemIcon>{item.icon}</ListItemIcon>
                 <ListItemText primary={item.label} />
               </ListItemButton>
