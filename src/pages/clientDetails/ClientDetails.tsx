@@ -10,6 +10,7 @@ import NoteDetails from "./components/NoteDetails";
 import useQueryDetails from "../../hooks/useQueryDetails";
 
 
+
 const ClientDetails = () => {
   console.log("ClientDetails rendered!");
   const { id } = useParams();
@@ -56,6 +57,7 @@ const ClientDetails = () => {
   if (notesError) return <p>{notesError.message}</p>;
 
   return (
+    <>
     <Box sx={{ display: "flex", flex: 1, flexDirection: "column", padding: 1 }}>
       <Box>
         <Typography>Nome: {clientData!.name}</Typography>
@@ -71,7 +73,7 @@ const ClientDetails = () => {
             flexDirection: { xs: "column", md: "row" },
             gap: 6,
           }}
-        >
+          >
           <ListDisplay
             sx={{
               display: "flex",
@@ -81,16 +83,16 @@ const ClientDetails = () => {
             }}
             renderList={
               <RenderNotesList
-                items={notesData ?? []}
-                handleOpenNote={handleOpenNote}
-                clientId={numericId}
+              items={notesData ?? []}
+              handleOpenNote={handleOpenNote}
+              clientId={numericId}
               />
             }
-          />
+            />
 
           {openNote !== null && notesData ? (
             <NoteDetails
-              note={notesData.find((note) => Number(note.id) === openNote)!}
+            note={notesData.find((note) => Number(note.id) === openNote)!}
             />
           ) : (
             <></>
@@ -98,6 +100,7 @@ const ClientDetails = () => {
         </Box>
       </Box>
     </Box>
+    </>
   );
 };
 
