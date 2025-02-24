@@ -4,7 +4,7 @@ type QueryKey = [string, number]
 
 type Props = {
   deletefn: (id: number) => Promise<number | undefined>;
-  queryKey: string | [string, number]
+  queryKey: string | QueryKey
 };
 
 const useQueryDelete = <T extends { id: string }>({
@@ -13,6 +13,7 @@ const useQueryDelete = <T extends { id: string }>({
 }: Props) => {
   const queryClient = useQueryClient();
   let queryKeyA = Array.isArray(queryKey) ? queryKey : [queryKey];
+  console.log("queryA",[...queryKeyA])
 
   return useMutation({
     mutationFn: (id: number) => deletefn(id),
@@ -21,9 +22,10 @@ const useQueryDelete = <T extends { id: string }>({
     onMutate: async (id) => {
       await queryClient.cancelQueries({ queryKey: [...queryKeyA] });
 
-      const previousData = queryClient.getQueryData([...queryKey]);
 
-      queryClient.setQueryData<T[]>([...queryKey], (oldData = []) => {
+      const previousData = queryClient.getQueryData([...queryKeyA]);
+
+      queryClient.setQueryData<T[]>([...queryKeyA], (oldData = []) => {
         // console.log("Before filtering:", oldData);
         //  console.log("ID to delete:", id);
 
@@ -38,12 +40,13 @@ const useQueryDelete = <T extends { id: string }>({
     },
     onError: (_err, _updatedData, context) => {
       if (context?.previousData !== undefined) {
-        queryClient.setQueryData([...queryKey], context.previousData);
+        queryClient.setQueryData([...queryKeyA], context.previousData);
+        console.log("error delete",_err);
       }
     },
     onSettled: (_, error) => {
       if (error) {
-        queryClient.invalidateQueries({ queryKey: [...queryKey] });
+        queryClient.invalidateQueries({ queryKey: [...queryKeyA] });
       }
     },
   });

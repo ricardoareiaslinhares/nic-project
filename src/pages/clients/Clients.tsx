@@ -15,7 +15,6 @@ const Clients = () => {
     queryKey: "clients",
   })
 
-  console.log("Client Page rendered");
 
   const navigate = useNavigate();
   const go2link = "/clients/";

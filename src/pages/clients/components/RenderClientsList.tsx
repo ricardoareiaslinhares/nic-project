@@ -80,7 +80,7 @@ const RenderClientsList = ({
     isError: isErrorDelete,
     isPending: isPendingDelete,
     isSuccess: isSuccessDelete,
-  } = useQueryDelete({ deletefn: deleteClient, queryKey: "clients" });
+  } = useQueryDelete({ deletefn: deleteClient, queryKey: "clients"});
 
   // Toast control
 const {openToast, showToast, closeToast} = useToast();

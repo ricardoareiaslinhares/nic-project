@@ -5,6 +5,7 @@ import { createClient, updateClient } from "../../../api/clientsApi";
 import useQueryUpdate from "../../../hooks/useQueryUpdate";
 import useQueryCreate from "../../../hooks/useQueryCreate";
 import { useEffect } from "react";
+import { useNavigate } from "react-router";
 
 type Props = {
   create: boolean;
@@ -16,7 +17,7 @@ type Props = {
 };
 
 const FormClient = (props: Props) => {
-  console.log("form data runned");
+  const navigation = useNavigate()
   const { create, newId, modalControl, selectedId, getClientData, showToast } =
     props;
 
@@ -58,6 +59,7 @@ const FormClient = (props: Props) => {
   const onSubmit = (newData: Client) => {
     if (create) {
       mutateCreate(newData);
+      navigation(`/clients/${newData.id}`)
     } else {
       mutateUpdate(newData);
     }
