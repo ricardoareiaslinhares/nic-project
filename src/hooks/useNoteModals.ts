@@ -5,12 +5,11 @@ const useNoteModals = () => {
   const [isCreateMode, setIsCreateMode] = useState(true); // true = create, false = edit/update
 
   const openCreateModal = useCallback(() => {
-
     setIsCreateMode(true);
     setIsCreateEditModalOpen(true);
   }, []);
 
-  const openEditModal = useCallback((id: number) => {
+  const openEditModal = useCallback(() => {
     setIsCreateMode(false);
     setIsCreateEditModalOpen(true);
   }, []);
@@ -19,11 +18,10 @@ const useNoteModals = () => {
     setIsCreateEditModalOpen(false);
   }, []);
 
-// Delete Modal is a diferente modal
+  // Delete Modal is a diferente modal
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const toggleModalDelete = useCallback(() => {
-    console.log(isDeleteModalOpen, "toggle called");
     setIsDeleteModalOpen((prev) => !prev);
   }, []);
 
@@ -34,8 +32,8 @@ const useNoteModals = () => {
     openEditModal,
     closeModal,
     isDeleteModalOpen,
-    toggleModalDelete
+    toggleModalDelete,
   };
 };
 
-export default useNoteModals
+export default useNoteModals;

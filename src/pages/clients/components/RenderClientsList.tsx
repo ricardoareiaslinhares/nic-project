@@ -78,7 +78,6 @@ const RenderClientsList = ({
   const {
     mutate: mutateDelete,
     isError: isErrorDelete,
-    isPending: isPendingDelete,
     isSuccess: isSuccessDelete,
   } = useQueryDelete({ deletefn: deleteClient, queryKey: "clients"});
 
@@ -88,7 +87,7 @@ const {openToast, showToast, closeToast} = useToast();
 useEffect(() => {
   showToast(isSuccessDelete, isErrorDelete);
 }, [isSuccessDelete, isErrorDelete]);
-//--
+//
 
   const contentForModalDeleteFn: ContentForModalDeleteFn<Client> = (data) => {
     return (id: number) => {

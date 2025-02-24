@@ -1,6 +1,5 @@
 
 const getIdOfLastListItem = <T extends {id: number|string}> (list: T[]) => {
-    console.log(list.length, "HEREk")
     if (list.length === 0) {
         return 0
     }

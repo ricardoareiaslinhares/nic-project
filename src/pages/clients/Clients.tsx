@@ -15,13 +15,11 @@ const Clients = () => {
     queryKey: "clients",
   })
 
-
   const navigate = useNavigate();
   const go2link = "/clients/";
 
   const navigateToClientDetails = (id: number) => {
     navigate(go2link + String(id));
-    console.log(id);
   };
 
   // Controlls for create/edit forms Modal and delete warning Modal

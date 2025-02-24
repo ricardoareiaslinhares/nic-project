@@ -10,7 +10,7 @@ const useClientModals = () => {
     setIsCreateEditModalOpen(true);
   }, []);
 
-  const openEditModal = useCallback((id: number) => {
+  const openEditModal = useCallback(() => {
     setIsCreateMode(false);
     setIsCreateEditModalOpen(true);
   }, []);

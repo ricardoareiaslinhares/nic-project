@@ -6,12 +6,7 @@ import ListItemButtonCustom from "../../../components/List/ListItemButtonCustom"
 import MenuContext from "../../../components/MenuContext/MenuContext";
 import { Box, Typography } from "@mui/material";
 import ContentMenu from "../../../components/ContentMenu";
-import {
-  ContentForModalBase,
-  ContentForModalDeleteFn,
-  MenuItemOptions,
-  ModalsControl,
-} from "../../../types";
+import { ContentForModalBase, ContentForModalDeleteFn } from "../../../types";
 import useQueryDelete from "../../../hooks/useQueryDelete";
 import getItemFromListById from "../../../utils/getItemFromListById";
 import { deleteNote, getNotes } from "../../../api/notesApi";
@@ -58,7 +53,6 @@ Props) => {
     openEditModal,
   } = useNoteModals();
 
-
   const NotesMenuOptions = new MenuOptions({
     editFn: openEditModal!,
     deleteFn: toggleModalDelete,
@@ -71,7 +65,6 @@ Props) => {
   const [filteredData, setFilteredData] = useState<Note[]>(items);
 
   useEffect(() => {
-    console.log("items by usef");
     setFilteredData(items);
   }, [items]);
 
@@ -85,7 +78,10 @@ Props) => {
       if (newData.length === 0) {
         handleOpenNote(null);
       }
-      handleOpenNote(Number(newData[0].id));
+      if (Number(newData[0])) {
+
+        handleOpenNote(Number(newData[0].id));
+      }
     } else {
       setFilteredData(items);
     }
@@ -95,17 +91,15 @@ Props) => {
   const {
     mutate: mutateDelete,
     isError: isErrorDelete,
-    isPending: isPendingDelete,
     isSuccess: isSuccessDelete,
   } = useQueryDelete({ deletefn: deleteNote, queryKey: ["notes", clientId] });
 
-  const {openToast, showToast, closeToast} = useToast()
+  const { openToast, showToast, closeToast } = useToast();
   useEffect(() => {
     showToast(isSuccessDelete, isErrorDelete);
   }, [isSuccessDelete, isErrorDelete]);
 
   const contentForModalDeleteFn: ContentForModalDeleteFn<Note> = (data) => {
-    console.log("contentForModalDeleteFn");
     return (id: number) => {
       const date = getItemFromListById(data, id.toString())?.date || "";
       return {
@@ -126,7 +120,7 @@ Props) => {
       ? "Por favor preencha todos os campos"
       : "Por favor modifique os campos que pretende atualizar",
   };
-  //HERE
+
 
   const fallBackNote: Note = {
     id: "0",
@@ -135,12 +129,13 @@ Props) => {
     note: "",
   };
   const selectNoteForEdit = useMemo(() => {
-    return (id: number) => getItemFromListById<Note>(items, id.toString()) ?? fallBackNote;
+    return (id: number) =>
+      getItemFromListById<Note>(items, id.toString()) ?? fallBackNote;
   }, [items]);
 
-  
   if (error) return <div>Error loading notes data for simulating last id</div>;
   if (isLoading) return <div>Loading data for simulating last id</div>;
+
   return (
     <>
       {items.length === 0 && <Typography>Sem notas adicionadas</Typography>}
@@ -196,7 +191,7 @@ Props) => {
           />
         </ModalContentNote>
       </Modal>
-      <Toast openToast={openToast} closeToast={closeToast}/>
+      <Toast openToast={openToast} closeToast={closeToast} />
     </>
   );
 };

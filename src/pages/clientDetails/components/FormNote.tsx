@@ -30,7 +30,6 @@ const FormNote = (props: Props) => {
 
   const data = selectedId !== null && (getNoteData(selectedId) as Note);
 
-
   const currentDate = getFormattedDate();
 
   const { register, handleSubmit } = useForm<Note>({
@@ -60,7 +59,7 @@ const FormNote = (props: Props) => {
     isPending: isPendingUpdate,
     isSuccess: isSuccessUpdate,
   } = useQueryUpdate({
-    queryKey: "notes",
+    queryKey: ["notes", clientId],
     updateFn: updateNote,
   });
 
@@ -71,6 +70,7 @@ const FormNote = (props: Props) => {
       isErrorCreate || isErrorUpdate
     );
   }, [isSuccessCreate, isSuccessUpdate, isErrorCreate, isErrorUpdate]);
+
 
   const onSubmit = (newData: Note) => {
     if (create) {

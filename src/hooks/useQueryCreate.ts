@@ -1,16 +1,15 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-
-
 type Props<T> = {
   createFn: (data: T) => Promise<T>;
-  queryKey: string | [string, number]
+  queryKey: string | [string, number];
+  navigateTo?: () => void
 };
 
 const useQueryCreate = <T extends { id: string }>({
   createFn,
   queryKey,
-
+  navigateTo
 }: Props<T>) => {
   const queryClient = useQueryClient();
 
@@ -25,7 +24,6 @@ const useQueryCreate = <T extends { id: string }>({
       await queryClient.cancelQueries({ queryKey: [...queryKeyA] });
 
       const previousData = queryClient.getQueryData([...queryKeyA]);
-  
 
       queryClient.setQueryData([...queryKeyA], (oldData: T[] = []) => {
         return [...oldData, data];
@@ -39,7 +37,7 @@ const useQueryCreate = <T extends { id: string }>({
         queryClient.setQueryData([...queryKeyA], context.previousData);
       }
     },
-    onSuccess: (data, updatedData) => {
+    onSuccess: async (data, updatedData) => {
       // updates cache with server data if response is successful
       queryClient.setQueryData<T[]>(
         [...queryKey],
@@ -50,7 +48,9 @@ const useQueryCreate = <T extends { id: string }>({
               : item
           ) ?? []
       );
-      //queryClient.setQueryData(queryKeyA, data);
+      if (navigateTo) {
+        navigateTo()
+      }
     },
     onSettled: (_, error) => {
       // invalidates cache and forces a new request

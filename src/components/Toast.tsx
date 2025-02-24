@@ -1,10 +1,9 @@
-import * as React from "react";
 import Snackbar, { SnackbarCloseReason } from "@mui/material/Snackbar";
 
 type Props = {
   openToast: {
     open: boolean;
-    message: string
+    message: string;
   };
   closeToast: () => void;
 };
@@ -12,9 +11,8 @@ type Props = {
 const Toast = ({ openToast, closeToast }: Props) => {
   const { open, message } = openToast;
 
-
   const handleClose = (
-    event: React.SyntheticEvent | Event,
+    _: React.SyntheticEvent | Event,
     reason?: SnackbarCloseReason
   ) => {
     if (reason === "clickaway") {

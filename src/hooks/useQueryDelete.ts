@@ -1,10 +1,10 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-type QueryKey = [string, number]
+
 
 type Props = {
   deletefn: (id: number) => Promise<number | undefined>;
-  queryKey: string | QueryKey
+  queryKey: string | [string, number]
 };
 
 const useQueryDelete = <T extends { id: string }>({
@@ -13,7 +13,6 @@ const useQueryDelete = <T extends { id: string }>({
 }: Props) => {
   const queryClient = useQueryClient();
   let queryKeyA = Array.isArray(queryKey) ? queryKey : [queryKey];
-  console.log("queryA",[...queryKeyA])
 
   return useMutation({
     mutationFn: (id: number) => deletefn(id),

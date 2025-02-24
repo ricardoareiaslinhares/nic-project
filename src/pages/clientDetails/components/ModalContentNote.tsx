@@ -8,7 +8,6 @@ type Props = {
 };
 const ModalContentNote = ({ cancelAction, content, children }: Props) => {
   const { title, message } = content;
-  console.log("content", content)
   return (
     <Box
       sx={{

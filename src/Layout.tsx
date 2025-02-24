@@ -1,9 +1,7 @@
 import { useCallback, useState } from "react";
 import { Outlet } from "react-router";
-
 import DrawerCustom from "./components/SideBar/DrawerCustom";
 import { Box, styled } from "@mui/material";
-
 
 const DRAWER_WIDTH = 240;
 

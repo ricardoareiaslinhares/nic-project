@@ -17,7 +17,7 @@ type Props = {
 };
 
 const FormClient = (props: Props) => {
-  const navigation = useNavigate()
+  const navigate = useNavigate();
   const { create, newId, modalControl, selectedId, getClientData, showToast } =
     props;
 
@@ -29,6 +29,12 @@ const FormClient = (props: Props) => {
       : { ...data },
   });
 
+  const handleNavigationOnCreate = () => {
+    //-1 because the newId updates to a newer number,
+    //  right after creation
+    navigate(`/clients/${newId-1}`)
+  }
+
   const {
     mutate: mutateCreate,
     isError: isErrorCreate,
@@ -37,12 +43,12 @@ const FormClient = (props: Props) => {
   } = useQueryCreate({
     queryKey: "clients",
     createFn: createClient,
+    navigateTo:handleNavigationOnCreate
   });
 
   const {
     mutate: mutateUpdate,
     isError: isErrorUpdate,
-    isPending: isPendingUpdate,
     isSuccess: isSuccessUpdate,
   } = useQueryUpdate({
     queryKey: "clients",
@@ -59,7 +65,6 @@ const FormClient = (props: Props) => {
   const onSubmit = (newData: Client) => {
     if (create) {
       mutateCreate(newData);
-      navigation(`/clients/${newData.id}`)
     } else {
       mutateUpdate(newData);
     }
@@ -67,44 +72,44 @@ const FormClient = (props: Props) => {
   };
 
   return (
+    <Box
+      component="form"
+      noValidate
+      autoComplete="off"
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <Box
-        component="form"
-        noValidate
-        autoComplete="off"
-        onSubmit={handleSubmit(onSubmit)}
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          rowGap: 2,
+        }}
       >
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            rowGap: 2,
-          }}
-        >
-          <FormControl fullWidth>
-            <InputLabel htmlFor="input-name">Nome completo</InputLabel>
-            <Input id="input-name" autoComplete="off" {...register("name")} />
-          </FormControl>
+        <FormControl fullWidth>
+          <InputLabel htmlFor="input-name">Nome completo</InputLabel>
+          <Input id="input-name" autoComplete="off" {...register("name")} />
+        </FormControl>
 
-          <FormControl fullWidth>
-            <InputLabel htmlFor="my-input">Email</InputLabel>
-            <Input id="input-email" autoComplete="off" {...register("email")} />
-          </FormControl>
-        </Box>
-
-        <Button
-          type="submit"
-          variant="contained"
-          sx={{ mt: 2 }}
-          disabled={isPendingCreate}
-        >
-          {isPendingCreate
-            ? "A enviar dados"
-            : create
-            ? "Criar Cliente"
-            : "Atualizar Cliente"}
-        </Button>
+        <FormControl fullWidth>
+          <InputLabel htmlFor="my-input">Email</InputLabel>
+          <Input id="input-email" autoComplete="off" {...register("email")} />
+        </FormControl>
       </Box>
-    );
+
+      <Button
+        type="submit"
+        variant="contained"
+        sx={{ mt: 2 }}
+        disabled={isPendingCreate}
+      >
+        {isPendingCreate
+          ? "A enviar dados"
+          : create
+          ? "Criar Cliente"
+          : "Atualizar Cliente"}
+      </Button>
+    </Box>
+  );
 };
 
 export default FormClient;

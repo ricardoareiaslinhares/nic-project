@@ -10,7 +10,7 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   minWidth: 400,
-  bgcolor: "background.paper",  
+  bgcolor: "background.paper",
   boxShadow: 24,
   p: 4,
   borderRadius: "8px",
@@ -22,8 +22,12 @@ type Props = {
   children: React.ReactNode;
   disableOutsideClick?: boolean;
 };
-const Modal = ({ open, handleOpenModal, children, disableOutsideClick=false }: Props) => {
-  console.log("Modal base runned")
+const Modal = ({
+  open,
+  handleOpenModal,
+  children,
+  disableOutsideClick = false,
+}: Props) => {
   return (
     <div>
       <ModalMui
@@ -42,9 +46,7 @@ const Modal = ({ open, handleOpenModal, children, disableOutsideClick=false }: P
         }}
       >
         <Fade in={open}>
-          <Box sx={style}>
-            {children}
-            </Box>
+          <Box sx={style}>{children}</Box>
         </Fade>
       </ModalMui>
     </div>

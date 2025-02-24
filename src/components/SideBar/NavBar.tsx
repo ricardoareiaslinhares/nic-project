@@ -8,7 +8,6 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import {
-  Fitbit as FitbitIcon,
   ArrowBack as ArrowBackIcon,
 } from "@mui/icons-material";
 import { useLocation, useNavigate } from "react-router";

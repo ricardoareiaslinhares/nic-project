@@ -12,7 +12,6 @@ import useQueryDetails from "../../hooks/useQueryDetails";
 
 
 const ClientDetails = () => {
-  console.log("ClientDetails rendered!");
   const { id } = useParams();
   const numericId = validateParamsId(id);
   if (!numericId) return <p>Id de Cliente inválido</p>;
@@ -48,8 +47,7 @@ const ClientDetails = () => {
     },
     []
   );
-  //--
-
+  //
 
   if (clientIsLoading) return <p>Loading...</p>;
   if (clientError) return <p>{clientError.message}</p>;

@@ -1,4 +1,4 @@
-import {  useState } from "react";
+import { useState } from "react";
 import { Button, Menu } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import MenuContextItem from "./MenuContextItem";
@@ -7,24 +7,16 @@ import { MenuItemOptions } from "../../types";
 type Props = {
   menuItemOptions: MenuItemOptions[];
   id: number;
-  selectItemId: (id:number) => void;
+  selectItemId: (id: number) => void;
 };
 
-const MenuContext = ({
-  menuItemOptions,
-  id,
-  selectItemId,
-}: Props) => {
+const MenuContext = ({ menuItemOptions, id, selectItemId }: Props) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
-  //pegar no id e ir buscar o client id
-
 
   const open = Boolean(anchorEl);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation();
-    console.log("MENU CONTEXT CLICKED", id);
     selectItemId(id);
     setAnchorEl(event.currentTarget);
   };
@@ -36,10 +28,10 @@ const MenuContext = ({
     options: MenuItemOptions[];
     handleClose: () => void;
   };
-  const onClickAlsoClose = (fn:()=>void) => {
+  const onClickAlsoClose = (fn: () => void) => {
     setAnchorEl(null);
     fn();
-  }
+  };
   const MenuItemClient = ({ options, handleClose }: MenuItemClientProps) => {
     return (
       <>

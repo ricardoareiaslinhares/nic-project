@@ -13,10 +13,10 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 10000,
+      staleTime: 10000, // doesnt refect for 10 sec
       refetchOnWindowFocus:false,
-      placeholderData:(prev: any) => prev // VER COM UPDATES
-      //gcTime: 10*60*1000
+      placeholderData:((prev: any) => prev), // uses prev data as placeholder while fetching new
+      gcTime: 10*60*1000 // garbage collet the unused cache after 10m
     }
   }
 });

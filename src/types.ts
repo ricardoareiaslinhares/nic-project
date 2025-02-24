@@ -24,7 +24,7 @@ export interface ContentForModalDeleteFn<T>{
 export interface ModalsControl {
     isCreateEditModalOpen: boolean;
     isCreateMode: boolean;
-    openEditModal?: (id: number) => void;
+    openEditModal?: () => void;
     openCreateModal: () => void;
     closeModal: () => void;
     isDeleteModalOpen: boolean;

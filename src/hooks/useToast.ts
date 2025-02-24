@@ -1,4 +1,4 @@
-import { use, useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 
 const useToast = () => {
   const [toast, setToast] = useState({ open: false, message: "" });
@@ -17,7 +17,6 @@ const useToast = () => {
   const closeToast = useCallback(() => {
     setToast((prev) => ({ ...prev, open: false }));
   }, []);
-
 
   return {
     openToast: toast,
