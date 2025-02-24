@@ -4,6 +4,7 @@ import Client from "../../../entities/client";
 import { createClient, updateClient } from "../../../api/clientsApi";
 import useQueryUpdate from "../../../hooks/useQueryUpdate";
 import useQueryCreate from "../../../hooks/useQueryCreate";
+import { useEffect } from "react";
 
 type Props = {
   create: boolean;
@@ -11,13 +12,15 @@ type Props = {
   newId: number;
   selectedId: number | null;
   modalControl: () => void;
+  showToast: (isSuccess: boolean, isError: boolean) => void;
 };
 
 const FormClient = (props: Props) => {
   console.log("form data runned");
-  const { create, newId, modalControl, selectedId, getClientData } = props;
+  const { create, newId, modalControl, selectedId, getClientData, showToast } =
+    props;
 
-  const data = selectedId !== null && getClientData(selectedId) as Client
+  const data = selectedId !== null && (getClientData(selectedId) as Client);
 
   const { register, handleSubmit } = useForm<Client>({
     defaultValues: create
@@ -25,15 +28,14 @@ const FormClient = (props: Props) => {
       : { ...data },
   });
 
-
   const {
     mutate: mutateCreate,
     isError: isErrorCreate,
     isPending: isPendingCreate,
     isSuccess: isSuccessCreate,
   } = useQueryCreate({
-    createFn: createClient,
     queryKey: "clients",
+    createFn: createClient,
   });
 
   const {
@@ -46,6 +48,13 @@ const FormClient = (props: Props) => {
     updateFn: updateClient,
   });
 
+  useEffect(() => {
+    showToast(
+      isSuccessUpdate || isSuccessCreate,
+      isErrorCreate || isErrorUpdate
+    );
+  }, [isSuccessCreate, isSuccessUpdate, isErrorCreate, isErrorUpdate]);
+
   const onSubmit = (newData: Client) => {
     if (create) {
       mutateCreate(newData);
@@ -56,44 +65,44 @@ const FormClient = (props: Props) => {
   };
 
   return (
-    <Box
-      component="form"
-      noValidate
-      autoComplete="off"
-      onSubmit={handleSubmit(onSubmit)}
-    >
       <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          rowGap: 2,
-        }}
+        component="form"
+        noValidate
+        autoComplete="off"
+        onSubmit={handleSubmit(onSubmit)}
       >
-        <FormControl fullWidth>
-          <InputLabel htmlFor="input-name">Nome completo</InputLabel>
-          <Input id="input-name" autoComplete="off" {...register("name")} />
-        </FormControl>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            rowGap: 2,
+          }}
+        >
+          <FormControl fullWidth>
+            <InputLabel htmlFor="input-name">Nome completo</InputLabel>
+            <Input id="input-name" autoComplete="off" {...register("name")} />
+          </FormControl>
 
-        <FormControl fullWidth>
-          <InputLabel htmlFor="my-input">Email</InputLabel>
-          <Input id="input-email" autoComplete="off" {...register("email")} />
-        </FormControl>
+          <FormControl fullWidth>
+            <InputLabel htmlFor="my-input">Email</InputLabel>
+            <Input id="input-email" autoComplete="off" {...register("email")} />
+          </FormControl>
+        </Box>
+
+        <Button
+          type="submit"
+          variant="contained"
+          sx={{ mt: 2 }}
+          disabled={isPendingCreate}
+        >
+          {isPendingCreate
+            ? "A enviar dados"
+            : create
+            ? "Criar Cliente"
+            : "Atualizar Cliente"}
+        </Button>
       </Box>
-
-      <Button
-        type="submit"
-        variant="contained"
-        sx={{ mt: 2 }}
-        disabled={isPendingCreate}
-      >
-        {isPendingCreate
-          ? "A enviar dados"
-          : create
-          ? "Criar Cliente"
-          : "Atualizar Cliente"}
-      </Button>
-    </Box>
-  );
+    );
 };
 
 export default FormClient;

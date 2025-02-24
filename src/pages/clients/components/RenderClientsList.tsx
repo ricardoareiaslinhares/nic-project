@@ -18,11 +18,13 @@ import getIdOfLastListItem from "../../../utils/getIdOfLastListItem";
 import useQueryDelete from "../../../hooks/useQueryDelete";
 import { deleteClient } from "../../../api/clientsApi";
 import getItemFromListById from "../../../utils/getItemFromListById";
+import Toast from "../../../components/Toast";
+import useToast from "../../../hooks/useToast";
 
 
 
 type Props = {
-  items: Client[];
+  items: Client[]
   navigateToClientDetails: (id: number) => void;
   menuItemOptions: MenuItemOptions[];
   clientModals: ModalsControl;
@@ -42,6 +44,7 @@ const RenderClientsList = ({
     isDeleteModalOpen,
     toggleModalDelete,
   } = clientModals;
+  
 
   const [selectedItemId, setSelectedItemId] = useState<number | null>(null);
 
@@ -68,7 +71,7 @@ const RenderClientsList = ({
         setFilteredData(items);
       }
     },
-    [items]
+    []
   );
   //---
 
@@ -78,6 +81,14 @@ const RenderClientsList = ({
     isPending: isPendingDelete,
     isSuccess: isSuccessDelete,
   } = useQueryDelete({ deletefn: deleteClient, queryKey: "clients" });
+
+  // Toast control
+const {openToast, showToast, closeToast} = useToast();
+
+useEffect(() => {
+  showToast(isSuccessDelete, isErrorDelete);
+}, [isSuccessDelete, isErrorDelete]);
+//--
 
   const contentForModalDeleteFn: ContentForModalDeleteFn<Client> = (data) => {
     return (id: number) => {
@@ -168,9 +179,11 @@ const RenderClientsList = ({
             selectedId={selectedItemId}
             getClientData={selectClientForEdit2}
             modalControl={closeModal}
+            showToast={showToast}
           />
         </ModalContentClient>
       </Modal>
+      <Toast openToast={openToast} closeToast={closeToast}/>
     </>
   );
 };

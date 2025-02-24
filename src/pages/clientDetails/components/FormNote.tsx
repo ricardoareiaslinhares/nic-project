@@ -12,6 +12,7 @@ import { createNote, updateNote } from "../../../api/notesApi";
 import useQueryCreate from "../../../hooks/useQueryCreate";
 import useQueryUpdate from "../../../hooks/useQueryUpdate";
 import getFormattedDate from "../../../utils/getFormattedDate";
+import { useEffect } from "react";
 
 type Props = {
   create: boolean;
@@ -20,10 +21,11 @@ type Props = {
   selectedId: number | null;
   modalControl: () => void;
   clientId: number;
+  showToast: (isSuccess:boolean, isError:boolean) => void
 };
 
 const FormNote = (props: Props) => {
-  const { create, newId, modalControl, selectedId, getNoteData, clientId } =
+  const { create, newId, modalControl, selectedId, getNoteData, clientId, showToast } =
     props;
 
   const data = selectedId !== null && (getNoteData(selectedId) as Note);
@@ -48,8 +50,8 @@ const FormNote = (props: Props) => {
     isPending: isPendingCreate,
     isSuccess: isSuccessCreate,
   } = useQueryCreate({
+    queryKey: ["notes", clientId],
     createFn: createNote,
-    queryKey: "notes",
   });
 
   const {
@@ -61,6 +63,14 @@ const FormNote = (props: Props) => {
     queryKey: "notes",
     updateFn: updateNote,
   });
+
+
+  useEffect(() => {
+    showToast(
+      isSuccessUpdate || isSuccessCreate,
+      isErrorCreate || isErrorUpdate
+    );
+  }, [isSuccessCreate, isSuccessUpdate, isErrorCreate, isErrorUpdate]);
 
   const onSubmit = (newData: Note) => {
     if (create) {

@@ -21,6 +21,8 @@ import getIdOfLastListItem from "../../../utils/getIdOfLastListItem";
 import { MenuOptions } from "../../../utils/menuItemOptions";
 import useNoteModals from "../../../hooks/useNoteModals";
 import useQueryGet from "../../../hooks/useQueryGet";
+import Toast from "../../../components/Toast";
+import useToast from "../../../hooks/useToast";
 
 type Props = {
   items: Note[];
@@ -55,7 +57,7 @@ Props) => {
     toggleModalDelete,
     openEditModal,
   } = useNoteModals();
-  // copiei as fn do client verificar se é igual para aqui
+
 
   const NotesMenuOptions = new MenuOptions({
     editFn: openEditModal!,
@@ -95,7 +97,12 @@ Props) => {
     isError: isErrorDelete,
     isPending: isPendingDelete,
     isSuccess: isSuccessDelete,
-  } = useQueryDelete({ deletefn: deleteNote, queryKey: "notes" });
+  } = useQueryDelete({ deletefn: deleteNote, queryKey: ["notes", clientId] });
+
+  const {openToast, showToast, closeToast} = useToast()
+  useEffect(() => {
+    showToast(isSuccessDelete, isErrorDelete);
+  }, [isSuccessDelete, isErrorDelete]);
 
   const contentForModalDeleteFn: ContentForModalDeleteFn<Note> = (data) => {
     console.log("contentForModalDeleteFn");
@@ -185,9 +192,11 @@ Props) => {
             clientId={clientId}
             getNoteData={selectNoteForEdit}
             modalControl={closeModal}
+            showToast={showToast}
           />
         </ModalContentNote>
       </Modal>
+      <Toast openToast={openToast} closeToast={closeToast}/>
     </>
   );
 };
