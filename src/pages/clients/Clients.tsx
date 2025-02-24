@@ -5,12 +5,15 @@ import { getClients } from "../../api/clientsApi";
 import { MenuOptions } from "../../utils/menuItemOptions";
 import useClientModals from "../../hooks/useClientModals";
 import useQueryGet from "../../hooks/useQueryGet";
+import Client from "../../entities/client";
+
 
 const Clients = () => {
-  const { data, error, isLoading } = useQueryGet({
+
+  const { data, error, isLoading } = useQueryGet<Client>({
     getFn: getClients,
     queryKey: "clients",
-  });
+  })
 
   console.log("Client Page rendered");
 
@@ -40,7 +43,7 @@ const Clients = () => {
       <ListDisplay
         renderList={
           <RenderClientsList
-            items={data ?? []}
+            items={data??[]}
             navigateToClientDetails={navigateToClientDetails}
             menuItemOptions={clientMenuOptions}
             clientModals={clientModalsProps}
