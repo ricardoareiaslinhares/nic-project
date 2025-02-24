@@ -4,12 +4,12 @@ import {
   UseQueryOptions,
 } from "@tanstack/react-query";
 
-type Props<T, TSelected = T> = {
+type Props<T, TSelected = T[]> = {
   getFn: () => Promise<T[]>;
   queryKey: string;
 } & Omit<UseQueryOptions<T[], unknown, TSelected>, "queryKey" | "queryFn">;
 
-const useQueryGet = <T, TSelected>({
+const useQueryGet = <T, TSelected = T[]>({
   getFn,
   queryKey,
   ...rest
