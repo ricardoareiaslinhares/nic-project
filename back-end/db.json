@@ -14,6 +14,11 @@
       "id": "3",
       "name": "Charlie Brown",
       "email": "charlie.brown@example.com"
+    },
+    {
+      "id": "4",
+      "name": "ric",
+      "email": "sss"
     }
   ],
   "sessionNotes": [
@@ -34,12 +39,6 @@
       "clientId": "2",
       "date": "2024-02-05",
       "note": "Focused on communication skills in relationships."
-    },
-    {
-      "id": "5",
-      "clientId": "1",
-      "date": "2025-02-24",
-      "note": "s"
     }
   ]
 }
