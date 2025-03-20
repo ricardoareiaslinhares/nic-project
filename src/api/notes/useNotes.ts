@@ -33,9 +33,9 @@ export const useCreateNote = () => {
   });
 };
 
-export const useDeleteNote = (noteId: number) => {
+export const useDeleteNote = () => {
   return useQueryDelete({
     deleteFn: deleteNote,
-    queryKey: [queryKey, noteId],
+    queryKey: queryKey,
   });
 };

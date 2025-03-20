@@ -42,9 +42,9 @@ export const useCreateClient = (navigateTo?: () => void) => {
   });
 };
 
-export const useDeleteClient = (clientId: number) => {
+export const useDeleteClient = () => {
   return useQueryDelete({
     deleteFn: deleteClient,
-    queryKey: [queryKey, clientId],
+    queryKey: queryKey,
   });
 };
