@@ -1,12 +1,9 @@
-const getItemFromListById = <T extends { id: string }>(
+export const getItemFromListById = <T extends { id: number }>(
   data: T[],
-  id: string | null
+  id: number | null
 ) => {
   if (id === null) {
     throw new Error("getItemFromListById: valid id is required");
   }
-  const item = data.find((item) => Number(item.id) === Number(id));
-
-  return item;
+  return data.find((item) => item.id === id);
 };
-export default getItemFromListById;
