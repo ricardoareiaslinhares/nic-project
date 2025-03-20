@@ -6,7 +6,7 @@ type Props<T, TSelected = T[]> = {
   userId?: number;
 } & Omit<UseQueryOptions<T[], unknown, TSelected>, "queryKey" | "queryFn">;
 
-const useQueryGet = <T, TSelected = T[]>({
+export const useQueryGet = <T, TSelected = T[]>({
   getFn,
   queryKey,
   userId,

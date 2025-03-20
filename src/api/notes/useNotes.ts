@@ -1,7 +1,7 @@
-import useQueryCreate from "../react-query-hooks/useQueryCreate";
-import useQueryDelete from "../react-query-hooks/useQueryDelete";
-import useQueryDetails from "../react-query-hooks/useQueryDetails";
-import useQueryUpdate from "../react-query-hooks/useQueryUpdate";
+import { useQueryCreate } from "../react-query-hooks/useQueryCreate";
+import { useQueryDelete } from "../react-query-hooks/useQueryDelete";
+import { useQueryDetails } from "../react-query-hooks/useQueryDetails";
+import { useQueryUpdate } from "../react-query-hooks/useQueryUpdate";
 import {
   createNote,
   deleteNote,

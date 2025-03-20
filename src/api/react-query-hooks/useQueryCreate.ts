@@ -6,7 +6,7 @@ type Props<T> = {
   navigateTo?: () => void;
 };
 
-const useQueryCreate = <T extends { id: number }>({
+export const useQueryCreate = <T extends { id: number }>({
   createFn,
   queryKey,
   navigateTo,

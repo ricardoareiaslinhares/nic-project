@@ -5,7 +5,7 @@ type Props = {
   queryKey: string | [string, number];
 };
 
-const useQueryDelete = <T extends { id: string }>({
+export const useQueryDelete = <T extends { id: string }>({
   deleteFn,
   queryKey,
 }: Props) => {

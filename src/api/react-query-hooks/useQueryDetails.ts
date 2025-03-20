@@ -6,7 +6,7 @@ type Props<T> = {
   queryKey: string;
 };
 
-const useQueryDetails = <T>({ getByIdFn, id, queryKey }: Props<T>) => {
+export const useQueryDetails = <T>({ getByIdFn, id, queryKey }: Props<T>) => {
   // const queryClient = useQueryClient();
   return useQuery({
     queryKey: [queryKey, id],
