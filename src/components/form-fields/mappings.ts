@@ -1,13 +1,13 @@
-import { TextField, Select, Checkbox, Autocomplete } from "@mui/material";
-import { Input } from "./Input";
-import { InputMultiLine } from "./InputMultiLine";
 import { DirectusInterface, SchemaTransformedType } from "../../types/schema";
 import { StatusBadgeView } from "./fields-view/StatusBadgeView";
 import { InputView } from "./fields-view/InputView";
+import { InputMultiLine } from "./fields-input/InputMultiLine";
+import { Input } from "./fields-input/Input";
+import { ComponentType } from "react";
 
 const directusInterfaceMapping: Record<
   DirectusInterface,
-  { write: React.ComponentType<any>; read: React.ComponentType<any> }
+  { write: ComponentType<any>; read: ComponentType<any> }
 > = {
   input: { write: Input, read: InputView },
   "input-multiline": { write: InputMultiLine, read: InputView },
