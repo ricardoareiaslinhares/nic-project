@@ -3,8 +3,7 @@ import { SchemaTransformedType } from "../types/schema";
 import { Note } from "../types/note";
 import { RenderField } from "../components/form-fields/RenderField";
 import { useForm } from "react-hook-form";
-import useQueryUpdate from "../api/react-query-hooks/useQueryUpdate";
-import { updateNote } from "../api/notes/notesApi";
+import { useUpdateNote } from "../api/notes/useNotes";
 
 type NotesFormProps = {
   schema: SchemaTransformedType[];
@@ -21,10 +20,7 @@ export const NotesForm = ({ schema, data }: NotesFormProps) => {
     isError: isErrorUpdate,
     isPending: isPendingUpdate,
     isSuccess: isSuccessUpdate,
-  } = useQueryUpdate({
-    queryKey: ["notes", data.id],
-    updateFn: updateNote,
-  });
+  } = useUpdateNote(data.id);
 
   const onSubmit = async (data: Note) => {
     mutateUpdate(data);

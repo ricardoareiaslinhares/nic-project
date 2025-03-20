@@ -1,7 +1,7 @@
 import { useGetNotesByClientId } from "../api/notes/useNotes";
-import { useCollectionSchema } from "../api/schema/useCollectionSchema";
-import { ErrorFetch } from "./ErrorFetch";
-import { Loading } from "./Loading";
+import { useSchemaNotes } from "../api/schema/useSchema";
+import { ErrorFetch } from "../components/ErrorFetch";
+import { Loading } from "../components/Loading";
 import { NotesForm } from "./NotesForm";
 
 export const NotesScreen = () => {
@@ -15,7 +15,7 @@ export const NotesScreen = () => {
     data: schema,
     error: schemaError,
     isLoading: schemaIsLoading,
-  } = useCollectionSchema("notes");
+  } = useSchemaNotes();
 
   if (notesIsLoading || schemaIsLoading) return <Loading />;
   if (!notesData || !schema || notesError || schemaError) return <ErrorFetch />;
