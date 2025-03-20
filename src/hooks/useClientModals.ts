@@ -1,11 +1,10 @@
 import { useState, useCallback } from "react";
 
-const useClientModals = () => {
+export const useClientModals = () => {
   const [isCreateEditModalOpen, setIsCreateEditModalOpen] = useState(false);
   const [isCreateMode, setIsCreateMode] = useState(true); // true = create, false = edit/update
 
   const openCreateModal = useCallback(() => {
-
     setIsCreateMode(true);
     setIsCreateEditModalOpen(true);
   }, []);
@@ -19,7 +18,7 @@ const useClientModals = () => {
     setIsCreateEditModalOpen(false);
   }, []);
 
-// Delete Modal is a diferente modal
+  // Delete Modal is a diferente modal
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const toggleModalDelete = useCallback(() => {
@@ -33,8 +32,6 @@ const useClientModals = () => {
     openEditModal,
     closeModal,
     isDeleteModalOpen,
-    toggleModalDelete
+    toggleModalDelete,
   };
 };
-
-export default useClientModals
