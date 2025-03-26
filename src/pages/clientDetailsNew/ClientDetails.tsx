@@ -9,15 +9,14 @@ import {
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { Email, Person } from "@mui/icons-material";
-import { Client } from "../../types/entities/client";
 import { LinkButton } from "../../components/presentables/LinkButton";
+import { useContextRecord } from "../../components/record/context";
+import { Client } from "../../types/entities/client";
 
-type ClientDetailsProps = {
-  data: Client;
-};
+type ClientDetailsProps = {};
 
-export const ClientDetails = ({ data }: ClientDetailsProps) => {
-  console.log("CLIENT DETAILS NEW", data);
+export const ClientDetails = ({}: ClientDetailsProps) => {
+  const { data } = useContextRecord<Client>();
 
   return (
     <Card

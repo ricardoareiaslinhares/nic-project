@@ -1,42 +1,41 @@
-import { ErrorFetch } from "./ErrorFetch";
-import { Loading } from "./Loading";
+import { ErrorFetch } from "../ErrorFetch";
+import { Loading } from "../Loading";
 import { useParams } from "react-router";
 import { validateParamsId } from "../../utils/validateParamsId";
 import { RecordConfig, RecordsConfig } from "../../types/types";
 import { useRecord } from "../../api_2/records-hooks/useRecord";
+import { RecordContext } from "./context";
 
 type RecordProps<DTO, T> = {
   recordConfig: RecordsConfig<DTO, T> | RecordConfig<DTO, T>;
   schemaConfig?: any;
-  //children: React.ReactNode;
-  renderComponent: (props: { data: T | T[] }) => React.ReactNode;
+  children: React.ReactNode;
 };
 
 export const Record = <DTO, T>({
   recordConfig,
-  renderComponent,
+  children,
 }: RecordProps<DTO, T>) => {
   const { id } = useParams();
 
   const numericId = validateParamsId(id);
 
-  const route = numericId
-    ? `${recordConfig.route}/${numericId}`
-    : recordConfig.route;
+  if (!numericId) return <ErrorFetch />;
 
-  const queryResult = recordConfig.useRecordAction(
-    recordConfig.queryKey,
-    recordConfig.route,
-    recordConfig.transformFn,
-    recordConfig.params,
-    numericId ? numericId : 42
+  const { queryKey, route, transformFn, params } = recordConfig;
+
+  const { data, error, isLoading } = useRecord(
+    queryKey,
+    route,
+    transformFn,
+    params,
+    numericId
   );
-
-  const { data, error, isLoading } = queryResult;
-  // console.log("RECORD DATA", route, numericId, data);
 
   if (isLoading) return <Loading />;
   if (error || !data) return <ErrorFetch />;
 
-  return renderComponent({ data });
+  return (
+    <RecordContext.Provider value={{ data }}>{children}</RecordContext.Provider>
+  );
 };

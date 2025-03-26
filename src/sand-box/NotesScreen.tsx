@@ -1,8 +1,8 @@
 import { useGetNotesByClientId } from "../api/notes/useNotes";
 import { useSchemaNotes } from "../api/schema/useSchema";
 import { useRecord, useRecords } from "../api/recordsHooks";
-import { ErrorFetch } from "../components/record/ErrorFetch";
-import { Loading } from "../components/record/Loading";
+import { ErrorFetch } from "../components/ErrorFetch";
+import { Loading } from "../components/Loading";
 import { Note } from "../types/entities/note";
 import { NotesForm } from "./NotesForm";
 

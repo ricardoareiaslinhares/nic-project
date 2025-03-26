@@ -4,14 +4,19 @@ import RenderClientsList from "./components/RenderClientsList";
 import { MenuOptions } from "../../utils/menuItemOptions";
 import { useClientModals } from "../../hooks/useClientModals";
 import { Client } from "../../types/entities/client";
+import { useContextRecords } from "../../components/records/context";
 
-const Clients = ({ data }: { data: Client[] }) => {
+type CLientsProps = {};
+
+const Clients = ({}: CLientsProps) => {
   const navigate = useNavigate();
 
   const navigateToClientDetails = (id: number) => {
     console.log(id);
     navigate("/clients/" + String(id));
   };
+
+  const { data } = useContextRecords<Client>();
 
   // Controlls for create/edit forms Modal and delete warning Modal
   const clientModals = useClientModals();

@@ -17,10 +17,7 @@ import { ClientDetails } from "./pages/clientDetailsNew/ClientDetails";
 const clientsScreen = {
   path: "/clients",
   element: (
-    <Record
-      recordConfig={clientsScreenConfig}
-      renderComponent={({ data }) => <Clients data={data as Client[]} />}
-    />
+    <Records recordConfig={clientsScreenConfig} children={<Clients />} />
   ),
 };
 
@@ -29,7 +26,7 @@ const clientDetailsScreen = {
   element: (
     <Record
       recordConfig={clientDetailsScreenConfig}
-      renderComponent={({ data }) => <ClientDetails data={data as Client} />}
+      children={<ClientDetails />}
     />
   ),
 };
@@ -38,7 +35,7 @@ const routes: RouteObject[] = [
   {
     path: "/",
     element: <Layout />,
-    //errorElement: <NotFoundError />,
+    errorElement: <NotFoundError />,
     children: [
       { index: true, element: <Home /> },
       { path: "/user", element: <UserProfile /> },

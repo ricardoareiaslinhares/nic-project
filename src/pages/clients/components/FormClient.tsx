@@ -8,8 +8,8 @@ import {
 } from "../../../api/clients/useClients";
 import { Client } from "../../../types/client";
 import { useSchemaClients } from "../../../api/schema/useSchema";
-import { ErrorFetch } from "../../../components/record/ErrorFetch";
-import { Loading } from "../../../components/record/Loading";
+import { ErrorFetch } from "../../../components/ErrorFetch";
+import { Loading } from "../../../components/Loading";
 import { RenderField } from "../../../components/form-fields/RenderField";
 
 type Props = {

@@ -14,12 +14,6 @@ export type RecordsConfig<DTO, T> = {
   route: string;
   transformFn: TransformData<DTO, T>;
   params: ApiParams;
-  useRecordAction: (
-    queryKey: string[],
-    route: string,
-    transformFn: TransformData<DTO, T>,
-    params: ApiParams
-  ) => UseQueryResult<T[], Error>;
 };
 
 export type RecordConfig<DTO, T> = {
@@ -27,13 +21,6 @@ export type RecordConfig<DTO, T> = {
   route: string;
   transformFn: TransformData<DTO, T>;
   params: ApiParams;
-  useRecordAction: (
-    queryKey: string[],
-    route: string,
-    transformFn: TransformData<DTO, T>,
-    params: ApiParams,
-    id: number
-  ) => UseQueryResult<T, Error>;
 };
 
 export type LoginDataType = {
