@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import Note from "../../../entities/note";
+
 import Modal from "../../../components/Modal/Modal";
 import ModalContentDelete from "../../../components/Modal/ModalContentDelete";
 import ListItemButtonCustom from "../../../components/List/ListItemButtonCustom";
@@ -7,17 +7,20 @@ import MenuContext from "../../../components/MenuContext/MenuContext";
 import { Box, Typography } from "@mui/material";
 import ContentMenu from "../../../components/ContentMenu";
 import { ContentForModalBase, ContentForModalDeleteFn } from "../../../types";
-import useQueryDelete from "../../../hooks/useQueryDelete";
-import getItemFromListById from "../../../utils/getItemFromListById";
-import { deleteNote, getNotes } from "../../../api/notesApi";
+
+import { getItemFromListById } from "../../../utils/getItemFromListById";
+import { deleteNote, getNotes } from "../../../api/notes/notesApi";
 import ModalContentNote from "./ModalContentNote";
 import FormNote from "./FormNote";
 import getIdOfLastListItem from "../../../utils/getIdOfLastListItem";
 import { MenuOptions } from "../../../utils/menuItemOptions";
-import useNoteModals from "../../../hooks/useNoteModals";
-import useQueryGet from "../../../hooks/useQueryGet";
+
 import Toast from "../../../components/Toast";
 import useToast from "../../../hooks/useToast";
+import useQueryGet from "../../../api/react-query-hooks/useQueryGet";
+import { Note } from "../../../entities/note";
+import useNoteModals from "../../../hooks/useNoteModals";
+import useQueryDelete from "../../../api/react-query-hooks/useQueryDelete";
 
 type Props = {
   items: Note[];
@@ -79,7 +82,6 @@ Props) => {
         handleOpenNote(null);
       }
       if (Number(newData[0])) {
-
         handleOpenNote(Number(newData[0].id));
       }
     } else {
@@ -92,7 +94,7 @@ Props) => {
     mutate: mutateDelete,
     isError: isErrorDelete,
     isSuccess: isSuccessDelete,
-  } = useQueryDelete({ deletefn: deleteNote, queryKey: ["notes", clientId] });
+  } = useQueryDelete({ deleteFn: deleteNote, queryKey: ["notes", clientId] });
 
   const { openToast, showToast, closeToast } = useToast();
   useEffect(() => {
@@ -120,7 +122,6 @@ Props) => {
       ? "Por favor preencha todos os campos"
       : "Por favor modifique os campos que pretende atualizar",
   };
-
 
   const fallBackNote: Note = {
     id: "0",

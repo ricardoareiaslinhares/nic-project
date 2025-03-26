@@ -10,6 +10,12 @@ export type DirectusTypes =
   | { type: "text"; value: string }
   | { type: "float"; value: number };
 
+type SchemaDropDownChoices = {
+  text: string;
+  value: string;
+  color: string;
+};
+
 export type SchemaType = {
   type: DirectusTypes;
   meta: {
@@ -22,6 +28,8 @@ export type SchemaType = {
     note?: string;
     options?: {
       placeholder?: string;
+      template?: string;
+      choices?: SchemaDropDownChoices[];
     };
   };
 };
@@ -37,5 +45,14 @@ export type SchemaTransformedType = {
   note?: string;
   options?: {
     placeholder?: string;
+    template?: string;
+    choices?: SchemaDropDownChoices[];
   };
+};
+
+//Acho que é para apagar
+export type UserSchema = {
+  first_name: SchemaTransformedType;
+  last_name: SchemaTransformedType;
+  email: SchemaTransformedType;
 };

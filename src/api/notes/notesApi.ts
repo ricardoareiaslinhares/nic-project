@@ -1,4 +1,4 @@
-import { Note } from "../../types/note";
+import { Note } from "../../types/entities/note";
 import { DirectusWrapper } from "../../types/types";
 import { api } from "../config";
 

@@ -15,12 +15,14 @@ import {
 import {
   ChevronLeft as ChevronLeftIcon,
   ChevronRight as ChevronRightIcon,
-  Person as PersonIcon,
+  PeopleAlt as PeopleAltIcon,
+  AccountCircle as AccountCircleIcon,
 } from "@mui/icons-material";
+
 import NavBar from "./NavBar";
 import { useNavigate } from "react-router";
-import { useQueryClient } from "@tanstack/react-query";
-import { getClients } from "../../api/clientsApi";
+import { QueryClient, useQueryClient } from "@tanstack/react-query";
+import { getClients } from "../../api/clients/clientsApi";
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
@@ -29,6 +31,11 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   ...theme.mixins.toolbar,
   justifyContent: "flex-end",
 }));
+
+const isCacheReady = (queryClient: QueryClient, queryKey: string) => {
+  const cacheList = queryClient.getQueryData([queryKey]) as any[];
+  return cacheList && cacheList.length > 1;
+};
 
 type Props = {
   handleDrawer: () => void;
@@ -42,14 +49,16 @@ const DrawerCustom = ({ open, drawerWidth, handleDrawer, children }: Props) => {
   const queryClient = useQueryClient();
 
   const handleClientsClick = (path: string) => {
+    if (!isCacheReady(queryClient, "clients")) {
+      queryClient.resetQueries({ queryKey: ["clients"] });
+    }
     if (location.pathname !== path) {
       navigate(path);
     } else {
-      queryClient.invalidateQueries({ queryKey: ["clients"] });
     }
   };
 
-  // Prefecth Queries on hover, except if we are on the clients page
+  // Prefetch Queries on hover, except if we are on the clients page
   const handleClientsHover = () => {
     if (location.pathname === "/clients") return;
     setTimeout(() => {
@@ -61,7 +70,8 @@ const DrawerCustom = ({ open, drawerWidth, handleDrawer, children }: Props) => {
   };
 
   const drawerItems = [
-    { label: "Clientes", path: "/clients", icon: <PersonIcon /> },
+    { label: "Perfil", path: "/user", icon: <AccountCircleIcon /> },
+    { label: "Clientes", path: "/clients", icon: <PeopleAltIcon /> },
   ];
 
   return (

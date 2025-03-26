@@ -19,10 +19,10 @@ export const useGetNotesByClientId = (clientId: number) => {
   });
 };
 
-export const useUpdateNote = (noteId: number) => {
+export const useUpdateNote = () => {
   return useQueryUpdate({
     updateFn: updateNote,
-    queryKey: [queryKey, noteId],
+    queryKey: queryKey,
   });
 };
 

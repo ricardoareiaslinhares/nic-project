@@ -1,25 +1,16 @@
 import { useNavigate } from "react-router";
 import ListDisplay from "../../components/List/ListDisplay";
 import RenderClientsList from "./components/RenderClientsList";
-import { getClients } from "../../api/clientsApi"; 
 import { MenuOptions } from "../../utils/menuItemOptions";
-import useClientModals from "../../hooks/useClientModals";
-import useQueryGet from "../../hooks/useQueryGet";
-import Client from "../../entities/client";
+import { useClientModals } from "../../hooks/useClientModals";
+import { Client } from "../../types/entities/client";
 
-
-const Clients = () => {
-
-  const { data, error, isLoading } = useQueryGet<Client>({
-    getFn: getClients,
-    queryKey: "clients",
-  })
-
+const Clients = ({ data }: { data: Client[] }) => {
   const navigate = useNavigate();
-  const go2link = "/clients/";
 
   const navigateToClientDetails = (id: number) => {
-    navigate(go2link + String(id));
+    console.log(id);
+    navigate("/clients/" + String(id));
   };
 
   // Controlls for create/edit forms Modal and delete warning Modal
@@ -32,22 +23,17 @@ const Clients = () => {
     deleteFn: clientModals.toggleModalDelete,
   }).getOptions();
 
-  if (error) return <div>Error loading data</div>;
-  if (isLoading) return <div>Loadingdata</div>;
-
   return (
-    <>
-      <ListDisplay
-        renderList={
-          <RenderClientsList
-            items={data??[]}
-            navigateToClientDetails={navigateToClientDetails}
-            menuItemOptions={clientMenuOptions}
-            clientModals={clientModalsProps}
-          />
-        }
-      ></ListDisplay>
-    </>
+    <ListDisplay
+      renderList={
+        <RenderClientsList
+          items={data}
+          navigateToClientDetails={navigateToClientDetails}
+          menuItemOptions={clientMenuOptions}
+          clientModals={clientModalsProps}
+        />
+      }
+    ></ListDisplay>
   );
 };
 

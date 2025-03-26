@@ -27,10 +27,10 @@ export const useGetClientById = (clientId: number) => {
   });
 };
 
-export const useUpdateClient = (clientId: number) => {
+export const useUpdateClient = () => {
   return useQueryUpdate({
     updateFn: updateClient,
-    queryKey: [queryKey, clientId],
+    queryKey: queryKey,
   });
 };
 

@@ -14,6 +14,12 @@ export const getSchema = async (collection: string) => {
   }
 };
 
+export const getUsers = async (): Promise<any> => {
+  const response = await fetch("/users");
+
+  return response;
+};
+
 // This fn is not being used, its here for future reference
 export const getPermissions = async () => {
   try {

@@ -8,3 +8,7 @@ No diretório root correr:
 e
 
 ```npm run dev```
+ 
+ LocalStorage variavle names:
+ nic_token
+ nic_refresh_token

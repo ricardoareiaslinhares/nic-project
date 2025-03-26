@@ -5,7 +5,7 @@ type Props = {
   queryKey: string | [string, number];
 };
 
-export const useQueryDelete = <T extends { id: string }>({
+export const useQueryDelete = <T extends { id: number | string }>({
   deleteFn,
   queryKey,
 }: Props) => {
@@ -42,8 +42,8 @@ export const useQueryDelete = <T extends { id: string }>({
     },
     onSettled: (_, error) => {
       if (error) {
-        queryClient.invalidateQueries({ queryKey: [...queryKeyA] });
       }
+      queryClient.invalidateQueries({ queryKey: [...queryKeyA] });
     },
   });
 };

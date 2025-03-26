@@ -7,10 +7,9 @@ import {
   Box,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import {
-  ArrowBack as ArrowBackIcon,
-} from "@mui/icons-material";
-import { useLocation, useNavigate } from "react-router";
+import { ArrowBack as ArrowBackIcon } from "@mui/icons-material";
+import { useLocation, useNavigate, useNavigationType } from "react-router";
+import { useQueryClient } from "@tanstack/react-query";
 
 type Props = {
   handleDrawer: () => void;
@@ -19,10 +18,19 @@ type Props = {
 };
 const NavBar = ({ handleDrawer, open, drawerWidth }: Props) => {
   const navigate = useNavigate();
+  const navigationType = useNavigationType();
   const location = useLocation();
+  const queryClient = useQueryClient();
+
   const goBack = () => {
+    if (navigationType === "POP") {
+      queryClient.removeQueries();
+      navigate("/", { replace: true });
+      return;
+    }
     if (location.pathname !== "/") {
       navigate(-1);
+      return;
     }
   };
 
@@ -57,20 +65,21 @@ const NavBar = ({ handleDrawer, open, drawerWidth }: Props) => {
             alignItems: "center",
           }}
         >
-          <Box sx={{
-            display: location.pathname === "/" ? "hidden" : "flex",
-          }}>
-          <IconButton
-            onClick={goBack}
+          <Box
             sx={{
-              opacity: location.pathname === "/" ? 0 : 1,
-              transition: "opacity 0.3s ease-in-out",
-              pointerEvents: location.pathname === "/" ? "none" : "auto",
+              display: location.pathname === "/" ? "hidden" : "flex",
             }}
           >
-            <ArrowBackIcon fontSize="large" sx={{ color: "black" }} />
-          </IconButton>
-
+            <IconButton
+              onClick={goBack}
+              sx={{
+                opacity: location.pathname === "/" ? 0 : 1,
+                transition: "opacity 0.3s ease-in-out",
+                pointerEvents: location.pathname === "/" ? "none" : "auto",
+              }}
+            >
+              <ArrowBackIcon fontSize="large" sx={{ color: "black" }} />
+            </IconButton>
           </Box>
 
           <IconButton onClick={() => navigate("/")}>

@@ -1,6 +1,6 @@
 import { Box, Button } from "@mui/material";
 import { SchemaTransformedType } from "../types/schema";
-import { Note } from "../types/note";
+import { Note } from "../types/entities/note";
 import { RenderField } from "../components/form-fields/RenderField";
 import { useForm } from "react-hook-form";
 import { useUpdateNote } from "../api/notes/useNotes";
@@ -20,7 +20,7 @@ export const NotesForm = ({ schema, data }: NotesFormProps) => {
     isError: isErrorUpdate,
     isPending: isPendingUpdate,
     isSuccess: isSuccessUpdate,
-  } = useUpdateNote(data.id);
+  } = useUpdateNote();
 
   const onSubmit = async (data: Note) => {
     mutateUpdate(data);

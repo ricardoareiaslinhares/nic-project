@@ -10,7 +10,7 @@ export const getClients = async (): Promise<Client[]> => {
       params: {
         //filter: userId ? { psychologist: { _eq: userId } } : {},
         fields:
-          "id,psychologist,user.id,user.first_name,user.last_name,user.email",
+          "id,psychologist,status,date_created,date_updated,user.id,user.first_name,user.last_name,user.email",
       },
     });
 
@@ -28,7 +28,7 @@ export const getClientById = async (id: number): Promise<Client> => {
       {
         params: {
           fields:
-            "id,psychologist,user.id,user.first_name,user.last_name,user.email",
+            "id,psychologist,status,date_created,date_updated,user.id,user.first_name,user.last_name,user.email",
         },
       }
     );
@@ -77,6 +77,16 @@ export const deleteClient = async (id: number): Promise<number | undefined> => {
 };
 
 const transformData = (client: ClientRaw): Client => {
-  const name = `${client.user.first_name} ${client.user.last_name}`;
-  return { name, ...client };
+  return {
+    id: client.id,
+    psychologist: client.psychologist,
+    status: client.status,
+    date_created: client.date_created,
+    date_updated: client.date_updated,
+    first_name: client.user.first_name,
+    last_name: client.user.last_name,
+    email: client.user.email,
+    name: `${client.user.first_name} ${client.user.last_name}`,
+    user: client.user,
+  };
 };

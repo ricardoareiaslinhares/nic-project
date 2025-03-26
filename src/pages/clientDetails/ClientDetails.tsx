@@ -1,34 +1,30 @@
 import { Box, Typography } from "@mui/material";
-import { useParams } from "react-router-dom";
-import { getClientById } from "../../api/clientsApi";
-import validateParamsId from "../../utils/validateParamsId";
 import ListDisplay from "../../components/List/ListDisplay";
 import RenderNotesList from "./components/RenderNotesList";
-import { getNotesByClientId } from "../../api/notesApi";
+import { getNotesByClientId } from "../../api/notes/notesApi";
 import { useCallback, useState } from "react";
 import NoteDetails from "./components/NoteDetails";
-import useQueryDetails from "../../hooks/useQueryDetails";
+import useQueryDetails from "../../api/react-query-hooks/useQueryDetails";
 
+// meter isto num custom hook
+import { useParams } from "react-router";
+import { validateParamsId } from "../../utils/validateParamsId";
+import { Client } from "../../types/entities/client";
 
+type ClientDetailsProps = {
+  data: Client;
+};
 
-const ClientDetails = () => {
+const ClientDetails = ({ data }: ClientDetailsProps) => {
   const { id } = useParams();
   const numericId = validateParamsId(id);
-  if (!numericId) return <p>Id de Cliente inválido</p>;
+  if (!numericId) return null; //better error here; like a redirect???
 
-  const {
-    data: clientData,
-    error: clientError,
-    isLoading: clientIsLoading,
-  } = useQueryDetails({
-    getByIdFn: getClientById,
-    id: numericId,
-    queryKey: "clients",
-  });
+  console.log("CLIENT DETAILS;", data);
 
   // Notes related
 
-  const {
+  /*   const {
     data: notesData,
     error: notesError,
     isLoading: notesIsLoading,
@@ -36,68 +32,66 @@ const ClientDetails = () => {
     getByIdFn: getNotesByClientId,
     id: numericId,
     queryKey: "notes",
-  });
+  }); */
 
   // Controls the NoteDetails componets
   const [openNote, setOpenNote] = useState<number | null>(null);
 
-  const handleOpenNote = useCallback(
-    (id: number | null) => {
-      setOpenNote(id);
-    },
-    []
-  );
+  const handleOpenNote = useCallback((id: number | null) => {
+    setOpenNote(id);
+  }, []);
   //
 
-  if (clientIsLoading) return <p>Loading...</p>;
-  if (clientError) return <p>{clientError.message}</p>;
-  if (notesIsLoading) return <p>Loading...</p>;
+  /*   if (notesIsLoading) return <p>Loading...</p>;
   if (notesError) return <p>{notesError.message}</p>;
+ */
 
+  const notesData = [];
   return (
     <>
-    <Box sx={{ display: "flex", flex: 1, flexDirection: "column", padding: 1 }}>
-      <Box>
-        <Typography>Nome: {clientData!.name}</Typography>
-        <Typography>Id. de Cliente: {clientData!.id}</Typography>
-        <Typography>Email: {clientData!.email}</Typography>
-      </Box>
-      <Box sx={{ marginTop: 3 }}>
-        <Typography variant="h5">Notas das Sessões</Typography>
-        <Box
-          sx={{
-            display: "flex",
-            flex: 1,
-            flexDirection: { xs: "column", md: "row" },
-            gap: 6,
-          }}
-          >
-          <ListDisplay
+      <Box
+        sx={{ display: "flex", flex: 1, flexDirection: "column", padding: 1 }}
+      >
+        <Box>
+          <Typography>Nome: {data.id}</Typography>
+          <Typography>Id. de Cliente: {data.name}</Typography>
+          <Typography>Email: {data.email}</Typography>
+        </Box>
+        <Box sx={{ marginTop: 3 }}>
+          <Typography variant="h5">Notas das Sessões</Typography>
+          <Box
             sx={{
               display: "flex",
               flex: 1,
-              minWidth: { xs: "300px", md: "500px" },
-              maxWidth: "500px",
+              flexDirection: { xs: "column", md: "row" },
+              gap: 6,
             }}
-            renderList={
-              <RenderNotesList
-              items={notesData ?? []}
-              handleOpenNote={handleOpenNote}
-              clientId={numericId}
+          >
+            <ListDisplay
+              sx={{
+                display: "flex",
+                flex: 1,
+                minWidth: { xs: "300px", md: "500px" },
+                maxWidth: "500px",
+              }}
+              renderList={
+                <RenderNotesList
+                  items={notesData ?? []}
+                  handleOpenNote={handleOpenNote}
+                  clientId={numericId}
+                />
+              }
+            />
+            {openNote !== null && notesData ? (
+              <NoteDetails
+                note={notesData.find((note) => Number(note.id) === openNote)!}
               />
-            }
-            />
-
-          {openNote !== null && notesData ? (
-            <NoteDetails
-            note={notesData.find((note) => Number(note.id) === openNote)!}
-            />
-          ) : (
-            <></>
-          )}
+            ) : (
+              <></>
+            )}
+          </Box>
         </Box>
       </Box>
-    </Box>
     </>
   );
 };

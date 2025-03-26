@@ -1,11 +1,16 @@
 import { Box, Button, FormControl, Input, InputLabel } from "@mui/material";
 import { useForm } from "react-hook-form";
-import Client from "../../../entities/client";
-import { createClient, updateClient } from "../../../api/clientsApi";
-import useQueryUpdate from "../../../hooks/useQueryUpdate";
-import useQueryCreate from "../../../hooks/useQueryCreate";
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
+import {
+  useCreateClient,
+  useUpdateClient,
+} from "../../../api/clients/useClients";
+import { Client } from "../../../types/client";
+import { useSchemaClients } from "../../../api/schema/useSchema";
+import { ErrorFetch } from "../../../components/record/ErrorFetch";
+import { Loading } from "../../../components/record/Loading";
+import { RenderField } from "../../../components/form-fields/RenderField";
 
 type Props = {
   create: boolean;
@@ -22,38 +27,30 @@ const FormClient = (props: Props) => {
     props;
 
   const data = selectedId !== null && (getClientData(selectedId) as Client);
+  console.log("Data:", data);
 
-  const { register, handleSubmit } = useForm<Client>({
-    defaultValues: create
-      ? { id: newId.toString(), name: "", email: "" }
-      : { ...data },
+  const { control, handleSubmit } = useForm<Client>({
+    defaultValues: create ? {} : { ...data },
   });
 
   const handleNavigationOnCreate = () => {
     //-1 because the newId updates to a newer number,
     //  right after creation
-    navigate(`/clients/${newId-1}`)
-  }
+    navigate(`/clients/${newId - 1}`);
+  };
 
   const {
     mutate: mutateCreate,
     isError: isErrorCreate,
     isPending: isPendingCreate,
     isSuccess: isSuccessCreate,
-  } = useQueryCreate({
-    queryKey: "clients",
-    createFn: createClient,
-    navigateTo:handleNavigationOnCreate
-  });
+  } = useCreateClient(handleNavigationOnCreate);
 
   const {
     mutate: mutateUpdate,
     isError: isErrorUpdate,
     isSuccess: isSuccessUpdate,
-  } = useQueryUpdate({
-    queryKey: "clients",
-    updateFn: updateClient,
-  });
+  } = useUpdateClient();
 
   useEffect(() => {
     showToast(
@@ -71,6 +68,17 @@ const FormClient = (props: Props) => {
     modalControl();
   };
 
+  const {
+    data: schema,
+    error: schemaError,
+    isLoading: schemaIsLoading,
+  } = useSchemaClients();
+
+  if (schemaIsLoading) return <Loading />;
+  if (!schema || schemaError) return <ErrorFetch />;
+
+  console.log("Schema:", schema);
+
   return (
     <Box
       component="form"
@@ -85,15 +93,9 @@ const FormClient = (props: Props) => {
           rowGap: 2,
         }}
       >
-        <FormControl fullWidth>
-          <InputLabel htmlFor="input-name">Nome completo</InputLabel>
-          <Input id="input-name" autoComplete="off" {...register("name")} />
-        </FormControl>
-
-        <FormControl fullWidth>
-          <InputLabel htmlFor="my-input">Email</InputLabel>
-          <Input id="input-email" autoComplete="off" {...register("email")} />
-        </FormControl>
+        {schema.map((field) => (
+          <RenderField key={field.field} field={field} control={control} />
+        ))}
       </Box>
 
       <Button

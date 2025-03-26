@@ -8,13 +8,11 @@ import {
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { Note } from "../../../entities/note";
-import { createNote, updateNote } from "../../../api/notes/notesApi";
+import { createNote, updateNote } from "../../../api/notesApi";
+import useQueryCreate from "../../../hooks/react-query/useQueryCreate";
+import useQueryUpdate from "../../../hooks/react-query/useQueryUpdate";
 import { getFormattedDate } from "../../../utils/getFormattedDate";
 import { useEffect } from "react";
-import { RenderField } from "../../../components/form-fields/RenderField";
-import useQueryCreate from "../../../api/react-query-hooks/useQueryCreate";
-import useQueryUpdate from "../../../api/react-query-hooks/useQueryUpdate";
-import { useSchemaNotes } from "../../../api/schema/useSchema";
 
 type Props = {
   create: boolean;
@@ -38,32 +36,19 @@ const FormNote = (props: Props) => {
   } = props;
 
   const data = selectedId !== null && (getNoteData(selectedId) as Note);
-  console.log("Data:", data);
 
   const currentDate = getFormattedDate();
 
-  const { data: schema, error, isLoading } = useSchemaNotes();
-
-  console.log("Schema:", schema);
-
-  const { control, handleSubmit, reset } = useForm<Note>({
+  const { register, handleSubmit } = useForm<Note>({
     defaultValues: create
       ? {
           id: newId.toString(),
-          client: clientId.toString(),
+          clientId: clientId.toString(),
           date: currentDate,
           note: "",
         }
       : { ...data },
   });
-
-  console.log("Controll", control);
-
-  useEffect(() => {
-    if (data) {
-      reset(data);
-    }
-  }, [data, reset]);
 
   const {
     mutate: mutateCreate,
@@ -115,7 +100,7 @@ const FormNote = (props: Props) => {
           rowGap: 2,
         }}
       >
-        {/* <FormControl fullWidth>
+        <FormControl fullWidth>
           <InputLabel htmlFor="input-date">Data</InputLabel>
           <Input id="input-date" autoComplete="off" {...register("date")} />
         </FormControl>
@@ -129,12 +114,8 @@ const FormNote = (props: Props) => {
           fullWidth
           {...register("note")}
         />
-     */}
-        {!isLoading &&
-          schema.map((item: any) => (
-            <RenderField key={item.field} field={item} control={control} />
-          ))}
       </Box>
+
       <Button
         type="submit"
         variant="contained"
