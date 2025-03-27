@@ -1,23 +1,27 @@
-import { ErrorFetch } from "../ErrorFetch";
 import { Loading } from "../Loading";
-import { RecordConfig, RecordsConfig } from "../../types/types";
 import { useRecords } from "../../api_2/records-hooks/useRecords";
 import { RecordsContext } from "./context";
+import { ErrorFetch } from "../ErrorFetch";
+import { DataGridColumnMapType } from "../../types/dataGrid.types";
+import { ApiConfig } from "../../types/types";
+import { DataGrid } from "../data-grid/DataGrid";
 
 type RecordsProps<DTO, T> = {
-  recordConfig: RecordsConfig<DTO, T> | RecordConfig<DTO, T>;
+  recordConfig: ApiConfig<DTO, T>;
   schemaConfig?: any;
-  children: React.ReactNode;
+  body?: React.ReactNode;
+  dataGridColumnMap: DataGridColumnMapType;
 };
 
 export const Records = <DTO, T>({
   recordConfig,
-  children,
+  body,
+  dataGridColumnMap,
 }: RecordsProps<DTO, T>) => {
-  const { queryKey, route, transformFn, params } = recordConfig;
+  const { entity, route, transformFn, params } = recordConfig;
 
   const { data, error, isLoading } = useRecords(
-    queryKey,
+    entity,
     route,
     transformFn,
     params
@@ -28,7 +32,7 @@ export const Records = <DTO, T>({
 
   return (
     <RecordsContext.Provider value={{ data }}>
-      {children}
+      {body || <DataGrid<T> dataGridColumnMap={dataGridColumnMap} />}
     </RecordsContext.Provider>
   );
 };
