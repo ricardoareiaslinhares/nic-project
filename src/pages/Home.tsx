@@ -1,10 +1,9 @@
 import Login from "../components/Login";
 
-const Home = () => {
+export const Home = () => {
   return (
     <>
       <Login />
     </>
   );
 };
-export default Home;

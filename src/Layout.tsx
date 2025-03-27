@@ -26,7 +26,7 @@ const Main = styled("main", {
   }),
 }));
 
-const Layout = () => {
+export const Layout = () => {
   //TODO por num custom hook, e o style de cima em stylesheet
   const [isDrawerOpen, setIsDrawerOpen] = useState(true);
 
@@ -69,5 +69,3 @@ const Layout = () => {
     </Box>
   );
 };
-
-export default Layout;
