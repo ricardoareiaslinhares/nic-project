@@ -1,10 +1,11 @@
-import Home from "./pages/Home";
+import { Home } from "./pages/Home";
 import { createBrowserRouter, RouteObject } from "react-router-dom";
-import NotFoundError from "./pages/NotFoundError";
-import Layout from "./Layout";
+import { NotFoundError } from "./pages/NotFoundError";
+import { Layout } from "./Layout";
 import { UserProfile } from "./pages/userProfile/UserProfile";
 import { NotesScreen } from "./sand-box/NotesScreen";
-import { clientRoutes } from "./screens/clients/clientRoutes";
+import { clientsRoutes } from "./screens/clients/clientsRoutes";
+import { notesRoutes } from "./screens/notes/notesRoutes";
 
 const routes: RouteObject[] = [
   {
@@ -15,7 +16,9 @@ const routes: RouteObject[] = [
       { index: true, element: <Home /> },
       { path: "/user", element: <UserProfile /> },
       { path: "/sandbox", element: <NotesScreen /> },
-      ...clientRoutes, // TODO Do Auth
+      // TODO Do Auth
+      ...clientsRoutes,
+      ...notesRoutes,
     ],
   },
 ];

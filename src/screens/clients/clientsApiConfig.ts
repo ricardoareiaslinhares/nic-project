@@ -3,7 +3,6 @@ import { ApiConfig, ApiConfigBase, TransformDTO } from "../../types/types";
 
 const transformClientData: TransformDTO<ClientDTO, Client> = (client) => {
   // TODO Use PICK / OMIT for rolebased Acess data transformation
-  console.log("DTO TRANSFORMATION OCURRED");
   return {
     id: client.id,
     psychologist: client.psychologist,
@@ -17,14 +16,14 @@ const transformClientData: TransformDTO<ClientDTO, Client> = (client) => {
   };
 };
 
-const clientApiConfigBase: ApiConfigBase<ClientDTO, Client> = {
+const clientsApiConfigBase: ApiConfigBase<ClientDTO, Client> = {
   route: "items/clients",
   entity: ["clients"],
   transformFn: transformClientData,
 };
 
 export const clientsApiConfig: ApiConfig<ClientDTO, Client> = {
-  ...clientApiConfigBase,
+  ...clientsApiConfigBase,
   params: {
     fields:
       "id,psychologist,status,date_created,date_updated,user.id,user.first_name,user.last_name,user.email",
