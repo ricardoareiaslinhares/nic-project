@@ -1,27 +1,17 @@
-import { UseQueryResult } from "@tanstack/react-query";
-
-export type TransformData<DTO, PresentableData> = (
-  data: DTO
-) => PresentableData;
+export type TransformDTO<DTO, PresentableData> = (data: DTO) => PresentableData;
 
 export type ApiParams = {
   fields?: string;
   filter?: any;
 };
 
-export type RecordsConfig<DTO, T> = {
-  queryKey: string[];
+export type ApiConfigBase<DTO, T> = {
+  entity: string[];
   route: string;
-  transformFn: TransformData<DTO, T>;
-  params: ApiParams;
+  transformFn: TransformDTO<DTO, T>;
 };
 
-export type RecordConfig<DTO, T> = {
-  queryKey: string[];
-  route: string;
-  transformFn: TransformData<DTO, T>;
-  params: ApiParams;
-};
+export type ApiConfig<DTO, T> = ApiConfigBase<DTO, T> & { params: ApiParams };
 
 export type LoginDataType = {
   email: string;
