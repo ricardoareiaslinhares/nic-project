@@ -16,26 +16,22 @@ export const generateColumns = <T extends Record<string, unknown>>(
     .filter((key) => !mapper[String(key)]?.hidden)
     .map((key) => {
       const mapperEntry = mapper[String(key)];
-      if (mapperEntry?.hidden) {
-        console.log(mapperEntry.headerName);
-      }
+
       if (!mapperEntry) {
         return {
           field: String(key),
-          headerName: presentDBkey(String(key)),
+          headerName: presentableDBkey(String(key)),
         };
       }
+
       return {
         field: mapperEntry.field!,
-        headerName: mapperEntry?.headerName,
-        renderCell: mapperEntry?.renderCell,
-        width: mapperEntry?.width,
         ...mapperEntry,
       };
     });
 };
 
-const presentDBkey = (s: string) => {
+const presentableDBkey = (s: string) => {
   return s
     .replace(/_/g, " ") // Replace underscores with spaces first
     .replace(/([A-Z])/g, " $1") // Add space before capital letters
