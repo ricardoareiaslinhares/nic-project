@@ -17,12 +17,14 @@ import {
   ChevronRight as ChevronRightIcon,
   PeopleAlt as PeopleAltIcon,
   AccountCircle as AccountCircleIcon,
+  Description as DescriptionIcon,
 } from "@mui/icons-material";
 
 import NavBar from "./NavBar";
 import { useNavigate } from "react-router";
-import { QueryClient, useQueryClient } from "@tanstack/react-query";
-import { getClients } from "../../api/clients/clientsApi";
+import { clientsApiConfig } from "../../screens/clients/clientsApiConfig";
+import { prefetchRecords } from "../../api_2/records-prefetch/prefetchRecords";
+import { useQueryClient } from "@tanstack/react-query";
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
@@ -31,11 +33,6 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   ...theme.mixins.toolbar,
   justifyContent: "flex-end",
 }));
-
-const isCacheReady = (queryClient: QueryClient, queryKey: string) => {
-  const cacheList = queryClient.getQueryData([queryKey]) as any[];
-  return cacheList && cacheList.length > 1;
-};
 
 type Props = {
   handleDrawer: () => void;
@@ -49,9 +46,6 @@ const DrawerCustom = ({ open, drawerWidth, handleDrawer, children }: Props) => {
   const queryClient = useQueryClient();
 
   const handleClientsClick = (path: string) => {
-    if (!isCacheReady(queryClient, "clients")) {
-      queryClient.resetQueries({ queryKey: ["clients"] });
-    }
     if (location.pathname !== path) {
       navigate(path);
     } else {
@@ -62,16 +56,20 @@ const DrawerCustom = ({ open, drawerWidth, handleDrawer, children }: Props) => {
   const handleClientsHover = () => {
     if (location.pathname === "/clients") return;
     setTimeout(() => {
-      queryClient.prefetchQuery({
-        queryKey: ["clients"],
-        queryFn: getClients,
-      });
-    }, 300);
+      prefetchRecords(
+        queryClient,
+        clientsApiConfig.entity,
+        clientsApiConfig.route,
+        clientsApiConfig.transformFn,
+        clientsApiConfig.params
+      );
+    }, 500);
   };
 
   const drawerItems = [
     { label: "Perfil", path: "/user", icon: <AccountCircleIcon /> },
     { label: "Clientes", path: "/clients", icon: <PeopleAltIcon /> },
+    { label: "Notas", path: "/notes", icon: <DescriptionIcon /> },
   ];
 
   return (
