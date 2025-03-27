@@ -2,12 +2,12 @@ import { ErrorFetch } from "../ErrorFetch";
 import { Loading } from "../Loading";
 import { useParams } from "react-router";
 import { validateParamsId } from "../../utils/validateParamsId";
-import { RecordConfig, RecordsConfig } from "../../types/types";
 import { useRecord } from "../../api_2/records-hooks/useRecord";
 import { RecordContext } from "./context";
+import { ApiConfig } from "../../types/types";
 
 type RecordProps<DTO, T> = {
-  recordConfig: RecordsConfig<DTO, T> | RecordConfig<DTO, T>;
+  recordConfig: ApiConfig<DTO, T>;
   schemaConfig?: any;
   children: React.ReactNode;
 };
@@ -22,10 +22,10 @@ export const Record = <DTO, T>({
 
   if (!numericId) return <ErrorFetch />;
 
-  const { queryKey, route, transformFn, params } = recordConfig;
+  const { entity, route, transformFn, params } = recordConfig;
 
   const { data, error, isLoading } = useRecord(
-    queryKey,
+    entity,
     route,
     transformFn,
     params,

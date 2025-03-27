@@ -7,7 +7,7 @@ export const useRecords = <DTO, T>(
   route: string,
   transformFn: TransformData<DTO, T>,
   params: ApiParams,
-  id?: number
+  id?: number //TODO refactor to delete after finishing notes
 ) => {
   return useQuery({
     queryKey: queryKey,
