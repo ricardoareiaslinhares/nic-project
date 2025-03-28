@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import { ApiParams, TransformData } from "../../types/types";
+import { ApiParams, TransformDTO } from "../../types/types";
 import { getSingleRecord } from "../methods";
 
 export const useRecord = <DTO, T>(
   queryKey: string[],
   route: string,
-  transformFn: TransformData<DTO, T>,
+  transformFn: TransformDTO<DTO, T>,
   params: ApiParams,
   id: number
 ) => {
