@@ -1,24 +1,24 @@
-import { DirectusInterface, SchemaTransformedType } from "../../types/schema";
-import { StatusBadgeView } from "./fields-view/StatusBadgeView";
-import { InputView } from "./fields-view/InputView";
-import { InputMultiLine } from "./fields-input/InputMultiLine";
-import { Input } from "./fields-input/Input";
+import { DirectusInterface, Schema } from "../../types/schema";
 import { ComponentType } from "react";
-import { NestedInput } from "./fields-input/NestedInput";
-import { DropDown } from "./fields-input/DropDown";
+import { Input } from "./fields-write/Input";
+import { StatusBadgeView } from "./fields-read/StatusBadgeView";
+import { InputRead } from "./fields-read/InputRead";
+import { InputMultiLine } from "./fields-write/InputMultiLine";
+import { DropDown } from "./fields-write/DropDown";
+import { NestedInput } from "./fields-write/NestedInput";
 
 const directusInterfaceMapping: Record<
   DirectusInterface,
   { write: ComponentType<any>; read: ComponentType<any> }
 > = {
-  input: { write: Input, read: InputView },
-  "input-multiline": { write: InputMultiLine, read: InputView },
-  "select-dropdown-m2o": { write: InputView, read: InputView },
+  input: { write: Input, read: InputRead },
+  "input-multiline": { write: InputMultiLine, read: InputRead },
+  "select-dropdown-m2o": { write: InputRead, read: InputRead },
   "select-dropdown": { write: DropDown, read: StatusBadgeView },
-  datetime: { write: Input, read: InputView },
+  datetime: { write: Input, read: InputRead },
 };
 
-export const mappingFields = (field: SchemaTransformedType) => {
+export const mappingFields = (field: Schema) => {
   if (field.hidden) return null;
   if (field.field === "user") return NestedInput;
 

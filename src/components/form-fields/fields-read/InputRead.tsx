@@ -1,13 +1,13 @@
 import { Box, TextField, Typography } from "@mui/material";
 import { Control, Controller, FieldValues, Path } from "react-hook-form";
-import { SchemaTransformedType } from "../../../types/schema";
+import { Schema } from "../../../types/schema";
 
 type InputReadOnlyProps<T extends FieldValues> = {
-  field: SchemaTransformedType;
+  field: Schema;
   control: Control<T>;
 };
 
-export const InputView = <T extends FieldValues>({
+export const InputRead = <T extends FieldValues>({
   field,
   control,
 }: InputReadOnlyProps<T>) => {
