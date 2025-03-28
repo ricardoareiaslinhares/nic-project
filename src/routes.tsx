@@ -16,6 +16,7 @@ const routes: RouteObject[] = [
       { index: true, element: <Home /> },
       { path: "/user", element: <UserProfile /> },
       { path: "/sandbox", element: <NotesScreen /> },
+
       // TODO Do Auth
       ...clientsRoutes,
       ...notesRoutes,

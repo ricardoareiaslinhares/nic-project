@@ -2,7 +2,10 @@ import { Loading } from "../Loading";
 import { useRecords } from "../../api_2/records-hooks/useRecords";
 import { RecordsContext } from "./context";
 import { ErrorFetch } from "../ErrorFetch";
-import { DataGridColumnMapType } from "../../types/dataGrid.types";
+import {
+  DataGridColumnMapType,
+  DataGridOptions,
+} from "../../types/dataGrid.types";
 import { ApiConfig } from "../../types/types";
 import { DataGrid } from "../data-grid/DataGrid";
 
@@ -11,12 +14,14 @@ type RecordsProps<DTO, T> = {
   schemaConfig?: any;
   body?: React.ReactNode;
   dataGridColumnMap: DataGridColumnMapType;
+  dataGridOptions?: DataGridOptions;
 };
 
 export const Records = <DTO, T>({
   recordConfig,
   body,
   dataGridColumnMap,
+  dataGridOptions,
 }: RecordsProps<DTO, T>) => {
   const { entity, route, transformFn, params } = recordConfig;
 
@@ -32,7 +37,12 @@ export const Records = <DTO, T>({
 
   return (
     <RecordsContext.Provider value={{ data }}>
-      {body || <DataGrid<T> dataGridColumnMap={dataGridColumnMap} />}
+      {body || (
+        <DataGrid<T>
+          dataGridColumnMap={dataGridColumnMap}
+          options={dataGridOptions}
+        />
+      )}
     </RecordsContext.Provider>
   );
 };

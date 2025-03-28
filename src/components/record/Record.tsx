@@ -24,6 +24,8 @@ export const Record = <DTO, T>({
 
   const { entity, route, transformFn, params } = recordConfig;
 
+  console.log("Record C. called");
+
   const { data, error, isLoading } = useRecord(
     entity,
     route,

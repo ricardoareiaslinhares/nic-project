@@ -1,5 +1,6 @@
 import { Client, ClientDTO } from "../../types/entities/client";
 import { ApiConfig, ApiConfigBase, TransformDTO } from "../../types/types";
+import { formateDate } from "../../utils/formateDate";
 
 const transformClientData: TransformDTO<ClientDTO, Client> = (client) => {
   // TODO Use PICK / OMIT for rolebased Acess data transformation
@@ -7,8 +8,8 @@ const transformClientData: TransformDTO<ClientDTO, Client> = (client) => {
     id: client.id,
     psychologist: client.psychologist,
     status: client.status,
-    date_created: client.date_created,
-    date_updated: client.date_updated,
+    date_created: formateDate(client.date_created),
+    date_updated: formateDate(client.date_updated),
     name: `${client.user.first_name} ${client.user.last_name}`,
     first_name: client.user.first_name,
     last_name: client.user.last_name,

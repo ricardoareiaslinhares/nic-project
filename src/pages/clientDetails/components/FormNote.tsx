@@ -9,7 +9,7 @@ import {
 import { useForm } from "react-hook-form";
 import { Note } from "../../../entities/note";
 import { createNote, updateNote } from "../../../api/notes/notesApi";
-import { getFormattedDate } from "../../../utils/getFormattedDate";
+import { getFormattedDate } from "../../../utils/formateDate";
 import { useEffect } from "react";
 import { RenderField } from "../../../components/form-fields/RenderField";
 import useQueryCreate from "../../../api/react-query-hooks/useQueryCreate";

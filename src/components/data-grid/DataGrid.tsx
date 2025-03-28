@@ -1,19 +1,45 @@
 import { GridValidRowModel, DataGrid as MUIDataGrid } from "@mui/x-data-grid";
-import { DataGridColumnMapType } from "../../types/dataGrid.types";
+import {
+  DataGridColumnMapType,
+  DataGridOptions,
+} from "../../types/dataGrid.types";
 import { useContextRecords } from "../records/context";
 import { generateColumns } from "./helpers";
+import { useNavigate } from "react-router";
 
 type DataGridProps = {
   dataGridColumnMap: DataGridColumnMapType;
+  options?: DataGridOptions;
 };
 
-export const DataGrid = <T,>({ dataGridColumnMap }: DataGridProps) => {
+export const DataGrid = <T,>({ dataGridColumnMap, options }: DataGridProps) => {
+  const navigate = useNavigate();
   const { data } = useContextRecords<T & GridValidRowModel>();
 
   const columnsDynamic =
     data.length > 0 ? generateColumns(data[0], dataGridColumnMap) : [];
 
-  return <MUIDataGrid rows={data} columns={columnsDynamic} />;
+  const handleNavigateDetails = (id: number) => {
+    console.log(
+      "handleNavigateDetails->",
+      `${options?.extraOptions?.navigateDetails}${id}`
+    );
+    navigate(`${options?.extraOptions?.navigateDetails}${id}`);
+  };
+
+  return (
+    <MUIDataGrid
+      rows={data}
+      columns={columnsDynamic}
+      onRowClick={({ row: { id } }) => handleNavigateDetails(id)}
+      sx={{
+        "& .MuiDataGrid-cell:hover": {
+          cursor: "pointer",
+        },
+      }}
+      {...options?.dataGridProps}
+    />
+  );
 };
 
 /* 

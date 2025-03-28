@@ -11,7 +11,7 @@ import { Note } from "../../../entities/note";
 import { createNote, updateNote } from "../../../api/notesApi";
 import useQueryCreate from "../../../hooks/react-query/useQueryCreate";
 import useQueryUpdate from "../../../hooks/react-query/useQueryUpdate";
-import { getFormattedDate } from "../../../utils/getFormattedDate";
+import { getFormattedDate } from "../../../utils/formateDate";
 import { useEffect } from "react";
 
 type Props = {

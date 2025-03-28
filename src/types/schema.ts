@@ -16,7 +16,7 @@ type SchemaDropDownChoices = {
   color: string;
 };
 
-export type SchemaType = {
+export type SchemaDTO = {
   type: DirectusTypes;
   meta: {
     field: string;
@@ -34,7 +34,7 @@ export type SchemaType = {
   };
 };
 
-export type SchemaTransformedType = {
+export type Schema = {
   field: string;
   collection: string;
   hidden: boolean;
@@ -48,11 +48,4 @@ export type SchemaTransformedType = {
     template?: string;
     choices?: SchemaDropDownChoices[];
   };
-};
-
-//Acho que é para apagar
-export type UserSchema = {
-  first_name: SchemaTransformedType;
-  last_name: SchemaTransformedType;
-  email: SchemaTransformedType;
 };

@@ -21,11 +21,15 @@ export const generateColumns = <T extends Record<string, unknown>>(
         return {
           field: String(key),
           headerName: presentableDBkey(String(key)),
+          headerAlign: "center",
+          align: "center",
         };
       }
 
       return {
         field: mapperEntry.field!,
+        headerAlign: "center",
+        align: "center",
         ...mapperEntry,
       };
     });

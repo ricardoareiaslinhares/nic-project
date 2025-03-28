@@ -1,11 +1,11 @@
-import { SchemaTransformedType, SchemaType } from "../../types/schema";
+import { Schema, SchemaDTO } from "../../types/schema";
 import { api } from "../config";
 
 export const getSchema = async (collection: string) => {
   try {
     const response = await api.get(`/fields/${collection}`);
     const data = response.data.data.map((field: any) =>
-      transformSchemaData(field)
+      transformSchemaDTO(field)
     );
     return data;
   } catch (error) {
@@ -31,9 +31,7 @@ export const getPermissions = async () => {
   }
 };
 
-const transformSchemaData = <T extends SchemaType>(
-  data: T
-): SchemaTransformedType => {
+const transformSchemaDTO = <T extends SchemaDTO>(data: T): Schema => {
   const { meta, type } = data;
   const {
     field,

@@ -1,15 +1,15 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { getPermissions, getSchema, getUsers } from "./schemaApi";
-import { SchemaTransformedType } from "../../types/schema";
+import { getPermissions, getSchema } from "./schemaApi";
+import { Schema } from "../../types/schema";
 
 const queryKey = ["directus", "schema"];
 
 const useSchema = (collection: string) => {
-  return useQuery<SchemaTransformedType[], Error>({
+  return useQuery<Schema[], Error>({
     queryKey: [...queryKey, collection],
     queryFn: () => getSchema(collection),
     staleTime: 1000 * 60 * 30, // Cache for 30 minutes
-    refetchOnWindowFocus: false, // Don't refetch unnecessarily
+    refetchOnWindowFocus: false,
   });
 };
 
